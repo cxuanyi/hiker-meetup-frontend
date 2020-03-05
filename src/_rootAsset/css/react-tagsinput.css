@@ -1,0 +1,113 @@
+.react-tagsinput {
+  display: inline-block;
+  padding: 4px 6px;
+  max-width: 100%;
+  line-height: 22px;
+}
+.react-tagsinput-tag {
+  cursor: pointer;
+  margin: 5px 3px 5px 0;
+  position: relative;
+  padding: 3px 8px;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 0.75em;
+  /* text-transform: uppercase; */
+  display: inline-block;
+  line-height: 1.5em;
+  padding-left: 0.8em;
+}
+.react-tagsinput-remove {
+  cursor: pointer;
+  font-weight: bold;
+}
+.react-tagsinput-tag a::before {
+  font-family: "Font Awesome\ 5 Free";
+  content: "\f00d";
+  padding: 0px 2px;
+  font-weight: 900;
+}
+.react-tagsinput-tag a {
+  cursor: pointer;
+  position: absolute;
+  top: 3px;
+  right: 0px;
+  opacity: 0;
+  background-color: transparent;
+  color: #fff;
+}
+.react-tagsinput-input {
+  background: transparent;
+  border: 0;
+  color: #3C4858;
+  font-family: sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 6px;
+  margin-top: 1px;
+  outline: none;
+  padding: 5px;
+  width: 80px;
+  display: none; /* added by xuanyi to diable textfield */
+  visibility: hidden; /* added by xuanyi to diable textfield */
+}
+.react-tagsinput-input2 {
+  background: transparent;
+  border: 0px solid #D2D2D2;
+  border-bottom-width: 1px;
+  background-color: transparent;
+  color: #495057;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 17px;
+  margin-left: 0px;
+  margin-top: 1px;
+  outline: none;
+  padding-top: 33px;
+  padding-left: 10px;
+  width: 160px;
+}
+.react-tagsinput .react-tagsinput-tag {
+  -webkit-transition: all 300ms ease 0s;
+  -moz-transition: all 300ms ease 0s;
+  -o-transition: all 300ms ease 0s;
+  -ms-transition: all 300ms ease 0s;
+  transition: all 300ms ease 0s;
+  background-color: #9e9e9e;
+  color: #fff;
+}
+.react-tagsinput .react-tagsinput-tag:hover {
+  padding-right: 22px;
+}
+.react-tagsinput .react-tagsinput-tag:hover a {
+  opacity: 1;
+  padding-right: 4px;
+  background-color: transparent;
+  color: #fff;
+}
+.react-tagsinput .react-tagsinput-tag.primary {
+  background-color: #9c27b0;
+  color: #fff;
+}
+.react-tagsinput .react-tagsinput-tag.info {
+  background-color: #00bcd4;
+  color: #fff;
+}
+.react-tagsinput .react-tagsinput-tag.success {
+  background-color: #4caf50;
+  color: #fff;
+}
+.react-tagsinput .react-tagsinput-tag.warning {
+  background-color: #ff9800;
+  color: #fff;
+}
+.react-tagsinput .react-tagsinput-tag.danger {
+  background-color: #f44336;
+  color: #fff;
+}
+.react-tagsinput .react-tagsinput-tag .rose {
+  background-color: #e91e63;
+  color: #fff;
+}
