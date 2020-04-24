@@ -1,0 +1,15 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-hikermeetupfrontend-dev-114309-authRole",
+            "UnauthRoleArn": "arn:aws:iam::861756551976:role/amplify-hikermeetupfrontend-dev-114309-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::861756551976:role/amplify-hikermeetupfrontend-dev-114309-authRole",
+            "Region": "ap-southeast-1",
+            "DeploymentBucketName": "amplify-hikermeetupfrontend-dev-114309-deployment",
+            "UnauthRoleName": "amplify-hikermeetupfrontend-dev-114309-unauthRole",
+            "StackName": "amplify-hikermeetupfrontend-dev-114309",
+            "StackId": "arn:aws:cloudformation:ap-southeast-1:861756551976:stack/amplify-hikermeetupfrontend-dev-114309/8dd729f0-8514-11ea-9380-0a8ba21bc988",
+            "AmplifyAppId": "docsgysqimgc0"
+        }
+    }
+}

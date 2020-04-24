@@ -22,7 +22,8 @@ export default function SwitchRoutes() {
         <Fragment>
           <Route path="/auth/login-page/:problem" component={AuthLayout} />
           <Route path="/auth/login-page" component={AuthLayout} />
-          <Redirect from="/" to="/auth/login-page" />
+          <Route path="/auth/read-login" component={AuthLayout} />
+          {/* <Redirect from="/" to="/auth/login-page" /> */}
         </Fragment>
       )}
     </Switch>
