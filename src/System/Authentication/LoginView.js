@@ -37,6 +37,9 @@ import {
   AUTH_SESSION_ENDED
 } from "../../_helper/message";
 
+import { testCognito } from "../../_helper/cognito";
+
+
 const useStyles = makeStyles(styles);
 
 export default function LoginPage() {
@@ -140,31 +143,9 @@ export default function LoginPage() {
   };
 
   const onLoginButtonClickedHandler = () => {
-    setUserInContext(userInContextTemplate);
-    if (
-      emailState === "error" ||
-      passwordState === "error" ||
-      emailState === "" ||
-      passwordState === ""
-    ) {
-      setErrorMessage(AUTH_INVALID_EMAIL_PASSWORD);
-    } else {
-      const requestAuthData = {
-        _email: loginCredentials.email.toLowerCase(),
-        _password: loginCredentials.password
-      };
 
-      const fetchResponseAuthData = async () => {
-        const responseAuthData = await ormsAxiosPostRequest(
-          "/auth/login",
-          requestAuthData
-        );
-        responseAuthData && responseAuthData.accessToken
-          ? setAccessToken(responseAuthData.accessToken)
-          : setErrorMessage(AUTH_INVALID_USERNAME_PASSWORD);
-      };
-      fetchResponseAuthData();
-    }
+    console.log("hellos");
+    testCognito();
   };
 
   return (
