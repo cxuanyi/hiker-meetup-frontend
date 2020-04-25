@@ -8,7 +8,6 @@ import DragIndicator from "@material-ui/icons/DragIndicator";
 import { generalModuleRoutes } from "./General/routes";
 // Views
 import LoginView from "./System/Authentication/LoginView";
-import ReadLoginView from "./System/Authentication/ReadLoginView";
 
 import {
   SYSTEM_MODULE,
@@ -70,14 +69,6 @@ const useRouteApi = userInContext => {
       name: "Login Page",
       moduleName: SYSTEM_MODULE,
       component: LoginView,
-      layout: "/auth",
-      invisible: true
-    },
-    {
-      path: "/read-login",
-      name: "Login Page",
-      moduleName: SYSTEM_MODULE,
-      component: ReadLoginView,
       layout: "/auth",
       invisible: true
     }

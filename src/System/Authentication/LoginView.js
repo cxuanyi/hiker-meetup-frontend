@@ -1,7 +1,9 @@
 import React from "react";
 import jwt from "jsonwebtoken";
-import { Authenticator } from 'aws-amplify-react';
-import { Auth } from 'aws-amplify';
+import { Authenticator, SignIn, Greetings } from "aws-amplify-react";
+import { Auth } from "aws-amplify";
+import PropTypes from "prop-types";
+import queryString from "query-string";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -24,8 +26,12 @@ import {
 
 const useStyles = makeStyles(styles);
 
-export default function LoginPage() {
+export default function LoginPage(props) {
   const classes = useStyles();
+  const { history, location } = props;
+  const values = queryString.parse(location.search);
+  const { transition, code } = values;
+
   const logo = require("../../_rootAsset/img/logo.png");
 
   const [loginCredentials, setLoginCredentials] = React.useState({
@@ -36,10 +42,32 @@ export default function LoginPage() {
   const [passwordState, setPasswordState] = React.useState("");
   const { userInContext, setUserInContext } = React.useContext(UserContext);
   const [accessToken, setAccessToken] = React.useState();
-  const [user, setUser] = React.useState();
+  const [user, setUser] = React.useState(null);
   const [invokedGetUserData, setInvokedGetUserData] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const { ormsAxiosPostRequest } = useORMSAxios();
+
+  React.useEffect(() => {
+    Auth.currentAuthenticatedUser({
+      bypassCache: false // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
+    })
+      .then(user => {
+        console.log(user);
+        if (!user) setUser(user);
+      })
+      .catch(err => {
+        console.log("big problem:" + err);
+        console.log("check here: " + transition + code);
+        console.log("Current Url: " + window.location.href);
+        if (transition) {
+          setTimeout(function() {
+            window.location.href = "http://localhost:3000/auth/login-page";
+          }, 2000); //will call the function after 2 secs.
+
+          // history.push("/auth/login-page");
+        }
+      });
+  }, []);
 
   React.useEffect(() => {
     if (accessToken) {
@@ -75,10 +103,6 @@ export default function LoginPage() {
     setUser,
     userInContext
   ]);
-  Auth.currentAuthenticatedUser({
-    bypassCache: false  // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
-}).then(user => console.log(user))
-.catch(err => console.log(err));
 
   return (
     <div className={classes.container}>
@@ -90,3 +114,9 @@ export default function LoginPage() {
     </div>
   );
 }
+
+LoginPage.propTypes = {
+  history: PropTypes.object,
+  location: PropTypes.object,
+  children: PropTypes.node
+};
