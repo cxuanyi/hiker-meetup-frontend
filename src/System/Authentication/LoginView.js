@@ -34,6 +34,7 @@ export default function LoginPage(props) {
 
   const logo = require("../../_rootAsset/img/logo.png");
 
+  const [authState, setAuthState] = React.useState(null);
   const [loginCredentials, setLoginCredentials] = React.useState({
     email: "",
     password: ""
@@ -48,25 +49,24 @@ export default function LoginPage(props) {
   const { ormsAxiosPostRequest } = useORMSAxios();
 
   React.useEffect(() => {
-    Auth.currentAuthenticatedUser({
-      bypassCache: false // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
-    })
-      .then(user => {
-        console.log(user);
-        if (!user) setUser(user);
-      })
-      .catch(err => {
-        console.log("big problem:" + err);
-        console.log("check here: " + transition + code);
-        console.log("Current Url: " + window.location.href);
+    const initializeData = async () => {
+      try {
+        const test = await Auth.currentAuthenticatedUser();
+        console.log(test);
+        setAuthState("authenticated");
+      } catch (err) {
+        console.log("not authenticated");
+
         if (transition) {
           setTimeout(function() {
-            window.location.href = "http://localhost:3000/auth/login-page";
-          }, 2000); //will call the function after 2 secs.
-
-          // history.push("/auth/login-page");
+            initializeData();
+          }, 1000); //will call the function after 2 secs.
         }
-      });
+        setAuthState("not authenticated");
+      }
+    };
+
+    initializeData();
   }, []);
 
   React.useEffect(() => {
