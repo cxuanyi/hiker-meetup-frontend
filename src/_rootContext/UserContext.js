@@ -23,6 +23,7 @@ const UserContextProvider = props => {
 
   React.useEffect(() => {
     const loggedInUserSerialized = localStorage.getItem("loggedInUser");
+    console.log('loggedInUserSerialized: ', loggedInUserSerialized);
     if (loggedInUserSerialized && !user.isLoggedOn) {
       const loggedinUser = JSON.parse(loggedInUserSerialized);
       const { exp } = loggedinUser;

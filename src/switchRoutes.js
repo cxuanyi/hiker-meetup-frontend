@@ -14,9 +14,7 @@ export default function SwitchRoutes() {
       {userInContext.isLoggedOn ? (
         <Fragment>
           <Route path="/main" component={MainLayout} />
-          <Redirect from="/" to="/main/ORFManagement/FZ2PMSCreate" />
-          {/* <Redirect from="/" to="/main/ORFManagement/ORFCreate" /> */}
-          {/* <Redirect from="/" to="/main/ORFManagement/ORFReadDrafterList" /> */}
+          <Redirect from="/" to="/main/General/Dashboard" />
         </Fragment>
       ) : (
         <Fragment>

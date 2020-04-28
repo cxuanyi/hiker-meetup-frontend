@@ -80,9 +80,9 @@ const Main = props => {
       />
       <div className={classes.mainPanel} ref={mainPanel}>
         <AdminNavbar
-          ModuleIcon={activeRoute.moduleIcon}
+          ModuleIcon={activeRoute.icon}
           ModuleColor={activeRoute.moduleColor}
-          pageTitle={`${activeRoute.moduleName}: ${activeRoute.name}`}
+          pageTitle={`${activeRoute.name}`}
           {...rest}
         />
         <div className={classes.content}>

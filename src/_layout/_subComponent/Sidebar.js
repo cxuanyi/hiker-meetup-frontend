@@ -193,13 +193,13 @@ class Sidebar extends React.Component {
                 className={classes.logoNormal}
                 to="/main/ORFManagement/FZ2PMSReadList"
               >
-                Collabo-Web
+                Hikers' Meet-Up
               </Link>
             </div>
             <Divider />
             <div className={classes.user}>
               <p className={classes.greeting}>
-                Hello, {userInContext.user._user_name}.
+                Hello, {userInContext.user.given_name}.
               </p>
               <p className={classes.userSessionInfo}>
                 Logged in: {getEpochToDisplayDate(userInContext.iat)}

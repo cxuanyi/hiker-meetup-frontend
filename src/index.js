@@ -48,7 +48,8 @@ Amplify.configure({
       // scope: ['openid'],
       redirectSignIn:
         "http://localhost:3000/auth/login-page?transition=signing_in",
-      redirectSignOut: "http://localhost:3000/auth/login-page",
+      redirectSignOut:
+        "http://localhost:3000/auth/login-page?transition=signing_out",
       responseType: "code" // or 'token', note that REFRESH token will only be generated when the responseType is code
     }
   }
