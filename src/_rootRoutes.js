@@ -34,6 +34,13 @@ const useRouteApi = () => {
       component: LoginView,
       layout: "/auth",
       invisible: true
+    },
+    {
+      path: "/logout-page",
+      name: "Login Page",
+      component: LoginView,
+      layout: "/auth",
+      invisible: true
     }
   ];
 

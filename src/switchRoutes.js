@@ -14,6 +14,7 @@ export default function SwitchRoutes() {
       {userInContext.isLoggedOn ? (
         <Fragment>
           <Route path="/main" component={MainLayout} />
+          <Route path="/auth/logout-page" component={AuthLayout} />
           <Redirect from="/" to="/main/General/Dashboard" />
         </Fragment>
       ) : (
