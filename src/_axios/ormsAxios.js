@@ -5,25 +5,17 @@ import { UserContext } from "../_rootContext/UserContext";
 const useORMSAxios = () => {
   const { userInContext } = React.useContext(UserContext);
   const baseUrl =
-    // "https://sd0y3a6t9b.execute-api.ap-southeast-1.amazonaws.com/production";
-    "http://ec2-13-229-200-236.ap-southeast-1.compute.amazonaws.com";
+    "https://sd0y3a6t9b.execute-api.ap-southeast-1.amazonaws.com/production"; //web api
+    // "http://hiker-meetup-backend-user-alb-1450887440.ap-southeast-1.elb.amazonaws.com:4000/" //user direct
+    // "http://ec2-13-229-200-236.ap-southeast-1.compute.amazonaws.com"; // events direct
 
   const ormsAxios = axios.create({
     baseURL: baseUrl
   });
 
   ormsAxios.defaults.headers.common["Authorization"] = userInContext.accessToken
-    ? "bearer " + userInContext.accessToken
+    ? "Bearer " + userInContext.accessToken
     : "";
-  
-  ormsAxios.defaults.headers.common["content-type"] = "application/json";
-  ormsAxios.defaults.headers.common["accept"] = "application/json";
-  ormsAxios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
-
-  // ormsAxios.defaults.headers.common["_user_id"] =
-  //   userInContext.user && userInContext.user._user_id
-  //     ? userInContext.user._user_id
-  //     : "";
 
   ormsAxios.interceptors.request.use(
     request => {
@@ -38,7 +30,7 @@ const useORMSAxios = () => {
 
   ormsAxios.interceptors.response.use(
     response => {
-      // console.log(response);
+      console.log(response);
       return response;
     },
     error => {
@@ -61,6 +53,7 @@ const useORMSAxios = () => {
     console.log("url", url);
     try {
       const responseData = await ormsAxios.get(url, {
+        // headers: { "Access-Control-Allow-Origin": "*" }, // GET cannot include this in header
         params: params
       });
       return responseData.data;

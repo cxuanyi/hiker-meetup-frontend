@@ -36,12 +36,18 @@ const DepartmentTaskReadSingleView = () => {
       "Friends"
     ]
   ];
-  const { fetchAllEvents } = useFz2Api();
+  const { fetchAllEvents, createEvent, fetchAllUsers } = useFz2Api();
 
   React.useEffect(() => {
     const initializeData = async () => {
       const allEvents = await fetchAllEvents();
       console.log("Check allEvents: ", allEvents);
+
+      const createResponse = await createEvent();
+      console.log("Check create: ", createResponse);
+
+      const allUsers = await fetchAllUsers();
+      console.log("Check allUsers: ", allUsers);
     };
 
     initializeData();
@@ -55,7 +61,7 @@ const DepartmentTaskReadSingleView = () => {
             <GridContainer>
               <GridItem>
                 <p className={classes.title}>
-                  Welcome to Hikers' Meet-Up, this is where hikers meet.
+                  Welcome to Hikers`&apos` Meet-Up, this is where hikers meet.
                 </p>
                 <div className={classes.iconWrapper}>
                   <DashboardIcon fontSize="small" />

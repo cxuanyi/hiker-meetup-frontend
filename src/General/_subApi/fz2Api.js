@@ -9,34 +9,52 @@ const useFz2Api = () => {
     // ormsAxiosGetFileRequest
   } = useORMSAxios();
 
-  /* #region ######################## Fetch all Fz2Pms types  ######################## */
+  /* #region ######################## Fetch all Events  ######################## */
   const fetchAllEvents = async () => {
     const allEvents = await ormsAxiosGetRequest("/events");
     return allEvents;
   };
   /* #endregion */
 
+  /* #region ######################## Fetch all User  ######################## */
+  const fetchAllUsers = async () => {
+    const allUsers = await ormsAxiosGetRequest("/user");
+    return allUsers;
+  };
+  /* #endregion */
+
   /* #region ######################## Create Full Fz2 (includes pms, fz2pms, pmsfile)  ######################## */
-  const createFz2Pms = async ({ fz2, files, pmsFileList }) => {
+  const createEvent = async () => {
     try {
       // Create Fz2 & Upload File.
-      const formData = new FormData();
-
-      Object.keys(fz2).forEach(key => {
-        if (Array.isArray(fz2[key]) && fz2[key].length > 0)
-          formData.append(key, JSON.stringify(fz2[key]));
-
-        if (fz2[key] && typeof fz2[key] === "string")
-          formData.append(key, fz2[key]);
-      });
-
-      if (pmsFileList) formData.append("files", files);
-
-      formData.append("pmsFiles", JSON.stringify(pmsFileList));
-
-      const responseData = await ormsAxiosPostRequest("/fz2/one", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      });
+      const responseData = await ormsAxiosPostRequest(
+        "/events",
+        {
+          startDateTime: "2020-04-03T15:10:39",
+          organizer: "Chen, Xuanyi",
+          attendees: [],
+          minAttendees: 5,
+          followers: [],
+          eventStatus: "PENDING",
+          category: "category",
+          endDateTime: "2020-04-03T15:10:39",
+          name: "name",
+          location: "location",
+          _links: {
+            self: {
+              href:
+                "http://ec2-13-229-200-236.ap-southeast-1.compute.amazonaws.com/events/fdc552e3-2ae0-45d2-b154-f2e37a7bb0a0"
+            },
+            events: {
+              href:
+                "http://ec2-13-229-200-236.ap-southeast-1.compute.amazonaws.com/events"
+            }
+          }
+        },
+        {
+          headers: { "Content-Type": "application/json" }
+        }
+      );
 
       // backend return failure to create
       if (responseData.error) {
@@ -52,7 +70,8 @@ const useFz2Api = () => {
 
   return {
     fetchAllEvents,
-    createFz2Pms
+    fetchAllUsers,
+    createEvent
   };
 };
 
