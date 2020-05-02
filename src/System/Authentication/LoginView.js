@@ -48,7 +48,6 @@ export default function LoginPage(props) {
             );
           }
         } catch (err) {
-          console.log(err);
           setTimeout(function() {
             initializeData();
           }, 1000); //will call the function after 1 secs.
@@ -57,7 +56,7 @@ export default function LoginPage(props) {
     };
 
     initializeData();
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <div className={classes.container}>

@@ -14,7 +14,8 @@ import Table from "../_rootComponent/Table/Table";
 // sub components
 // style for this view
 import formStyle from "../_rootAsset/jss/formStyle";
-//others
+// others
+import useFz2Api from "./_subApi/fz2Api";
 
 const useFormStyle = makeStyles(formStyle);
 
@@ -35,6 +36,16 @@ const DepartmentTaskReadSingleView = () => {
       "Friends"
     ]
   ];
+  const { fetchAllEvents } = useFz2Api();
+
+  React.useEffect(() => {
+    const initializeData = async () => {
+      const allEvents = await fetchAllEvents();
+      console.log("Check allEvents: ", allEvents);
+    };
+
+    initializeData();
+  }, []); // eslint-disable-line
 
   return (
     <div>
