@@ -19,7 +19,6 @@ const useORMSAxios = () => {
 
   ormsAxios.interceptors.request.use(
     request => {
-      console.log(request);
       return request;
     },
     error => {
@@ -30,7 +29,6 @@ const useORMSAxios = () => {
 
   ormsAxios.interceptors.response.use(
     response => {
-      console.log(response);
       return response;
     },
     error => {
@@ -50,7 +48,6 @@ const useORMSAxios = () => {
   };
 
   const ormsAxiosGetRequest = async (url, params = {}) => {
-    console.log("url", url);
     try {
       const responseData = await ormsAxios.get(url, {
         // headers: { "Access-Control-Allow-Origin": "*" }, // GET cannot include this in header
