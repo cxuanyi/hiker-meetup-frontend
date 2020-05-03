@@ -32,6 +32,7 @@ const useEventApi = () => {
         {},
         { headers: { "Content-Type": "application/json" } }
       );
+      console.log("responseData:", responseData);
 
       if (responseData.error) {
         throw new Error();

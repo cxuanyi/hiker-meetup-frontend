@@ -60,6 +60,7 @@ const EventReadListView = props => {
           ...object,
           ...{
             sn: sn + 1,
+            organizer: object.organizer.name,
             startDate: startDate,
             endDate: endDate,
             pledgedHikers: object.attendees.length,

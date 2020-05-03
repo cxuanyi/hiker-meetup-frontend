@@ -69,7 +69,7 @@ const FZ2PMSSubView = props => {
               </Typography>
             </GridItem>
             <GridItem lg={10}>
-              <p className={classes.viewText}>{event.organizer}</p>
+              <p className={classes.viewText}>{event.organizer.name}</p>
             </GridItem>
           </GridContainer>
           <GridContainer>
