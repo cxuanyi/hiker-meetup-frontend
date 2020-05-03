@@ -16,6 +16,7 @@ import Table from "../_rootComponent/Table/Table";
 import formStyle from "../_rootAsset/jss/formStyle";
 // others
 import useFz2Api from "./_subApi/fz2Api";
+import { UserContext } from "../_rootContext/UserContext";
 
 const useFormStyle = makeStyles(formStyle);
 
@@ -37,17 +38,20 @@ const DepartmentTaskReadSingleView = () => {
     ]
   ];
   const { fetchAllEvents, createEvent, fetchAllUsers } = useFz2Api();
+  const { userInContext } = React.useContext(UserContext);
 
   React.useEffect(() => {
     const initializeData = async () => {
-      const allEvents = await fetchAllEvents();
-      console.log("Check allEvents: ", allEvents);
+      // const allEvents = await fetchAllEvents();
+      // console.log("Check allEvents: ", allEvents);
 
-      const createResponse = await createEvent();
-      console.log("Check create: ", createResponse);
+      // const createResponse = await createEvent();
+      // console.log("Check create: ", createResponse);
 
-      const allUsers = await fetchAllUsers();
-      console.log("Check allUsers: ", allUsers);
+      // const allUsers = await fetchAllUsers();
+      // console.log("Check allUsers: ", allUsers);
+
+      console.log("userInContext:", userInContext);
     };
 
     initializeData();

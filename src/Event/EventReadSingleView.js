@@ -19,6 +19,8 @@ import useEventApi from "./_subApi/eventApi";
 import FZ2PMSSubView from "./_subComponent/FZ2PMSSubView";
 import DeleteAlert from "../_rootComponent/CustomAlert/DeleteAlert";
 import LoadingAlert from "../_rootComponent/CustomAlert/LoadingAlert";
+import PledgeEventAlert from "../_rootComponent/CustomAlert/PledgeEventAlert";
+import { UserContext } from "../_rootContext/UserContext";
 
 const useFormStyle = makeStyles(formStyle);
 const useSweetAlertStyle = makeStyles(sweetAlertStyle);
@@ -27,8 +29,9 @@ const FZ2PMSReadSingleView = props => {
   const { history, match } = props;
   const classes = { ...useFormStyle(), ...useSweetAlertStyle() };
   const [event, setEvent] = React.useState();
-  const { fetchOneEvent } = useEventApi();
+  const { fetchOneEvent, postPledgeEvent } = useEventApi();
   const [alert, setAlert] = React.useState(null);
+  const { userInContext } = React.useContext(UserContext);
 
   // const postDeleteFz2Pms = React.useCallback(
   //   async input => {
@@ -75,19 +78,57 @@ const FZ2PMSReadSingleView = props => {
     setAlert(null);
   };
 
+  /* #region ############ pledgeEventAlert() & requestPledgeEvent(): Pledge to an event ############## */
+  const requestPledgeEvent = React.useCallback(
+    async event_ => {
+      return await postPledgeEvent(event_);
+    },
+    [postPledgeEvent]
+  );
+  const pledgeEventAlert = React.useCallback(
+    event_ => {
+      setAlert(
+        <PledgeEventAlert
+          {...props}
+          setAlert={setAlert}
+          confirmBtnCssClass={classes.button + " " + classes.success}
+          cancelBtnCssClass={classes.button + " " + classes.danger}
+          submitRequestCallback={async () => {
+            const result = await requestPledgeEvent(event_);
+            return result;
+          }}
+          redirectCallback={() => {
+            history.push(`/main/Events/ListEvents/${event_.id}`);
+          }}
+        >
+          It&apos;s an adventure, you might lose your life, you sure?
+        </PledgeEventAlert>
+      );
+    },
+    [
+      classes.danger,
+      classes.success,
+      classes.button,
+      props,
+      requestPledgeEvent,
+      history
+    ]
+  );
+  /* #endregion */
+
+  /* #region ############ Initial initiation to values ############ */
   React.useEffect(() => {
     const initializeData = async () => {
       loadingAlert();
       const { eventId } = match.params;
-      console.log("eventId: ", eventId);
       const event = await fetchOneEvent({ eventId: eventId });
-      console.log("event: ", event);
       setEvent(event);
       hideAlert();
     };
     initializeData();
     // eslint-disable-next-line
   }, []);
+  /* #endregion */
 
   return (
     <div>
@@ -107,17 +148,24 @@ const FZ2PMSReadSingleView = props => {
                   </Button>
                 </div>
                 <div className={classes.right}>
-                  {/* <Button
+                  <Button
                     color="success"
                     className={classes.formButton}
                     onClick={() => {
                       history.push(
-                        `/main/ORFManagement/FZ2PMSReadList/FZ2PMSUpdate/${fz2.fz2_id}`
+                        `/main/ORFManagement/FZ2PMSReadList/FZ2PMSUpdate/${event.id}`
                       );
                     }}
                   >
                     Edit
-                  </Button> */}
+                  </Button>
+                  <Button
+                    color="warning"
+                    className={classes.formButton}
+                    onClick={() => pledgeEventAlert(event)}
+                  >
+                    Pledge to join!
+                  </Button>
                   {/* <Button
                     color="danger"
                     className={classes.formButton}

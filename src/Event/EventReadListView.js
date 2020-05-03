@@ -16,7 +16,6 @@ import formStyle from "../_rootAsset/jss/formStyle";
 import sweetAlertStyle from "../_rootComponent/CustomAlert/jss/sweetAlertStyle";
 // others
 import useEventApi from "./_subApi/eventApi";
-// import useFz2Api from "../_subApi/fz2Api";
 import LoadingAlert from "../_rootComponent/CustomAlert/LoadingAlert";
 import { getISOToDateString } from "../_helper/date";
 
@@ -134,14 +133,14 @@ const EventReadListView = props => {
 
   const initializeDataCallback = React.useCallback(async () => {
     loadingAlert();
+    const { eventId } = match.params;
+    console.log("eventId: ", eventId);
     const responseObject = await fetchAllEvents();
-    console.log("responseObject: ", responseObject);
     const embeddedObject = responseObject._embedded
       ? responseObject._embedded
       : null;
     const events = embeddedObject ? embeddedObject.events : [];
     const eventsMapped = dataMapper(events);
-    console.log(eventsMapped);
     setAllEventList(eventsMapped);
     hideAlert();
   }, [loadingAlert, dataMapper, match]);
@@ -156,7 +155,7 @@ const EventReadListView = props => {
       {alert}
       <GridContainer>
         <GridItem lg={12}>
-          <p className={classes.title}>Listing All FZ2</p>
+          <p className={classes.title}>Listing All Hiking Events</p>
           <div className={classes.iconWrapper}>
             <ViewListIcon fontSize="small" />
           </div>

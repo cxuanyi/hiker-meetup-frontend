@@ -23,6 +23,27 @@ const useEventApi = () => {
   };
   /* #endregion */
 
+  /* #region ######################## Post Pledge Event ######################## */
+  const postPledgeEvent = async event => {
+    try {
+      const eventId = event.id;
+      const responseData = await ormsAxiosPostRequest(
+        `/events/${eventId}/attend`,
+        {},
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      if (responseData.error) {
+        throw new Error();
+      }
+
+      return responseData;
+    } catch (error) {
+      return { error: 1 };
+    }
+  };
+  /* #endregion */
+
   /* #region ######################## Fetch all User  ######################## */
   const fetchAllUsers = async () => {
     const allUsers = await ormsAxiosGetRequest("/user");
@@ -79,6 +100,7 @@ const useEventApi = () => {
     fetchAllEvents,
     fetchAllUsers,
     fetchOneEvent,
+    postPledgeEvent,
     createEvent
   };
 };

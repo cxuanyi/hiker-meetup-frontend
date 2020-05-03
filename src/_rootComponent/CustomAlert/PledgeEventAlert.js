@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import SweetAlert from "react-bootstrap-sweetalert";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-const SubmitRequestAlert = props => {
+const PledgeEventAlert = props => {
   const {
     setAlert,
     confirmBtnCssClass,
@@ -36,13 +36,13 @@ const SubmitRequestAlert = props => {
         success
         style={{ display: "block", marginTop: "-200px" }}
         confirmBtnCssClass={confirmBtnCssClass}
-        title="Request Submitted!"
+        title="Plegey Pledged to Event!"
         onConfirm={() => {
           redirectCallback();
         }}
         onCancel={() => hideAlert()}
       >
-        Request has been submitted!
+        Pledged! Remember to buy insurance.
       </SweetAlert>
     );
   };
@@ -53,13 +53,13 @@ const SubmitRequestAlert = props => {
         danger
         style={{ display: "block", marginTop: "-200px" }}
         confirmBtnCssClass={confirmBtnCssClass}
-        title="Request Not Submitted!"
+        title="Plegey Pledge Not Accepted"
         onConfirm={() => {
           hideAlert();
         }}
         onCancel={() => hideAlert()}
       >
-        Request has NOT been submitted!
+        Unable to pledge, maybe your soul is not pure.
       </SweetAlert>
     );
   };
@@ -70,13 +70,13 @@ const SubmitRequestAlert = props => {
         danger
         style={{ display: "block", marginTop: "-200px" }}
         confirmBtnCssClass={confirmBtnCssClass}
-        title="Cancelled"
+        title="You are lousy!"
         onConfirm={() => {
           hideAlert();
         }}
         onCancel={() => hideAlert()}
       >
-        Selected record is safe :)
+        You are not joining :/
       </SweetAlert>
     );
   };
@@ -89,9 +89,9 @@ const SubmitRequestAlert = props => {
     <SweetAlert
       {...rest}
       warning
-      title="Are you sure?"
-      confirmBtnText="Yes, Submit Request!"
-      cancelBtnText="Cancel"
+      title="Pledgey Pledge to Event?"
+      confirmBtnText="Yes, I pledge my soul!"
+      cancelBtnText="Nope"
       style={{ display: "block", marginTop: "-200px" }}
       confirmBtnCssClass={confirmBtnCssClass}
       cancelBtnCssClass={cancelBtnCssClass}
@@ -109,7 +109,7 @@ const SubmitRequestAlert = props => {
   );
 };
 
-SubmitRequestAlert.propTypes = {
+PledgeEventAlert.propTypes = {
   children: PropTypes.node,
   alert: PropTypes.node,
   setAlert: PropTypes.func,
@@ -119,4 +119,4 @@ SubmitRequestAlert.propTypes = {
   redirectCallback: PropTypes.func
 };
 
-export default SubmitRequestAlert;
+export default PledgeEventAlert;

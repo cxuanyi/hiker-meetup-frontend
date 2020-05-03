@@ -20,6 +20,15 @@ const useRouteApi = () => {
       layout: "/main"
     },
     {
+      path: "/Events/ListEvents/:eventId",
+      name: "List Events",
+      icon: Event,
+      moduleColor: generalModuleColor,
+      component: EventReadListView,
+      layout: "/main",
+      invisible: true
+    },
+    {
       path: "/Events/ListEvents",
       name: "List Events",
       icon: Event,
@@ -33,7 +42,8 @@ const useRouteApi = () => {
       icon: Event,
       moduleColor: generalModuleColor,
       component: EventReadSingleView,
-      layout: "/main"
+      layout: "/main",
+      invisible: true
     }
   ];
 

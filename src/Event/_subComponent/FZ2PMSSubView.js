@@ -11,6 +11,7 @@ import GridItem from "../../_rootComponent/Grid/GridItem";
 // style for this view
 import formStyle from "../../_rootAsset/jss/formStyle";
 // other
+import { getISOToDateString } from "../../_helper/date";
 
 const useFormStyle = makeStyles(formStyle);
 
@@ -69,6 +70,74 @@ const FZ2PMSSubView = props => {
             </GridItem>
             <GridItem lg={10}>
               <p className={classes.viewText}>{event.organizer}</p>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem lg={2}>
+              <Typography className={classes.labelHorizontalView}>
+                Start Date:
+              </Typography>
+            </GridItem>
+            <GridItem lg={10}>
+              <p className={classes.viewText}>
+                {getISOToDateString(event.startDateTime)}
+              </p>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem lg={2}>
+              <Typography className={classes.labelHorizontalView}>
+                End Date:
+              </Typography>
+            </GridItem>
+            <GridItem lg={10}>
+              <p className={classes.viewText}>
+                {getISOToDateString(event.endDateTime)}
+              </p>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem lg={2}>
+              <Typography className={classes.labelHorizontalView}>
+                Event Status:
+              </Typography>
+            </GridItem>
+            <GridItem lg={10}>
+              <p className={classes.viewText}>{event.eventStatus}</p>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem lg={2}>
+              <Typography className={classes.labelHorizontalView}>
+                Minimum Pledged Hiker(s):
+              </Typography>
+            </GridItem>
+            <GridItem lg={10}>
+              <p className={classes.viewText}>{event.minAttendees}</p>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem lg={2}>
+              <Typography className={classes.labelHorizontalView}>
+                Current No. of Pledged Hiker(s):
+              </Typography>
+            </GridItem>
+            <GridItem lg={10}>
+              <p className={classes.viewText}>{event.attendees.length}</p>
+            </GridItem>
+          </GridContainer>
+          <GridContainer>
+            <GridItem lg={2}>
+              <Typography className={classes.labelHorizontalView}>
+                Who Pledged:
+              </Typography>
+            </GridItem>
+            <GridItem lg={10}>
+              <p className={classes.viewText}>
+                {event.attendees.length
+                  ? event.attendees
+                  : "No hiker pledged yet ;.("}
+              </p>
             </GridItem>
           </GridContainer>
         </GridItem>
