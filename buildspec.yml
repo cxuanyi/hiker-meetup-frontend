@@ -4,7 +4,8 @@ phases:
   install:
     runtime-versions:
       nodejs: 10
-
+  pre_build:
+      - aws s3 rm s3://hiker-meetup-frontend --recursive
   build:
     commands:
       - npm install
