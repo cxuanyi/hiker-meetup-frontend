@@ -7,7 +7,8 @@ phases:
 
   build:
     commands:
-      - npm i react-scripts
+      - npm install
+      - npm install aws-amplify 
       - npm run build
     
 artifacts:
