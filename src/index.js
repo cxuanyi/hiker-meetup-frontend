@@ -15,6 +15,14 @@ import "./_rootAsset/css/react-tagsinput.css";
 
 // const store = createStore(rootReducer);
 const hist = createBrowserHistory();
+const webBaseUrl = window.location.origin;
+console.log(
+  "webBaseUrl:",
+  webBaseUrl,
+  `${webBaseUrl}/auth/login-page?transition=signing_in`,
+  `${webBaseUrl}/auth/login-page?transition=signing_out`
+);
+
 Amplify.configure({
   Auth: {
     // REQUIRED only for Federated Authentication - Amazon Cognito Identity Pool ID
@@ -46,10 +54,8 @@ Amplify.configure({
         "aws.cognito.signin.user.admin"
       ],
       // scope: ['openid'],
-      redirectSignIn:
-        "http://localhost:3000/auth/login-page?transition=signing_in",
-      redirectSignOut:
-        "http://localhost:3000/auth/login-page?transition=signing_out",
+      redirectSignIn: `${webBaseUrl}/auth/login-page?transition=signing_in`,
+      redirectSignOut: `${webBaseUrl}/auth/login-page?transition=signing_out`,
       responseType: "code" // or 'token', note that REFRESH token will only be generated when the responseType is code
     }
   }
