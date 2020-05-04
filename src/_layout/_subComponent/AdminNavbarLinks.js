@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import { Auth } from "aws-amplify";
 
 // react additional components
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -50,6 +51,7 @@ export default function HeaderLinks() {
         onConfirm={() => {
           hideAlert();
           setOpenProfile(null);
+          Auth.signOut();
           localStorage.clear();
           setUserInContext(userInContextLogoutTemplate);
         }}

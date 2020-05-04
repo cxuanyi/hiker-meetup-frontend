@@ -35,13 +35,13 @@ export default function Footer(props) {
         <div className={classes.left}>
           <List className={classes.list}>
             <ListItem className={classes.inlineBlock}>
-              <a href="https://www.yokogawa.com/sg/" className={block}>
-                {"Corporate Website"}
+              <a href="https://www.HikerMeetUp.com/" className={block}>
+                {"Cult Website"}
               </a>
             </ListItem>
           </List>
         </div>
-        <p className={classes.right}>Yokogawa, Co-innovating tomorrow.</p>
+        <p className={classes.right}>Hikers' Meet-Up, You hike. I hike. Everybody hike.</p>
       </div>
     </footer>
   );

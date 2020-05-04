@@ -48,6 +48,12 @@ const loginPageStyle = () => ({
     marginLeft: "5px",
     marginRight: "5px"
   },
+  icon2: {
+    display: "inline",
+    marginLeft: "5px",
+    marginRight: "5px",
+    color: "#4caf50"
+  },
   error: {
     color: "black"
   },

@@ -24,7 +24,7 @@ export default function Footer(props) {
       <div className={container}>
         <p className={classes.right}>
           &copy; {1900 + new Date().getYear()}{" "}
-          {"Yokogawa, Co-innovating tomorrow."}
+          {"Hikers' Meet-Up, You hike. I hike. Everybody hike."}
         </p>
       </div>
     </footer>
