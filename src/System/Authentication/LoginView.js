@@ -37,7 +37,7 @@ export default function LoginPage(props) {
   const { location } = props;
   const values = queryString.parse(location.search);
   const { transition } = values;
-  const [transitionState, setTransitionState] = React.useState(transition);
+  const [transitionState, setTransitionState] = React.useState(transition); // eslint-disable-line
   const { userInContext, setUserInContext } = React.useContext(UserContext);
 
   React.useEffect(() => {

@@ -37,7 +37,7 @@ const DepartmentTaskReadSingleView = () => {
       "Friends"
     ]
   ];
-  const { fetchAllEvents, createEvent, fetchAllUsers } = useFz2Api();
+  const { fetchAllEvents, createEvent, fetchAllUsers } = useFz2Api(); // eslint-disable-line
   const { userInContext } = React.useContext(UserContext);
 
   React.useEffect(() => {
