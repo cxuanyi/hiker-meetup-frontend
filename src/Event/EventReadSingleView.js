@@ -32,7 +32,7 @@ const FZ2PMSReadSingleView = props => {
   const { fetchOneEvent, postPledgeEvent } = useEventApi();
   const [alert, setAlert] = React.useState(null);
   const { userInContext } = React.useContext(UserContext);
-
+  const [showJoinButton, setShowJoinButton] = React.useState(true);
   // const postDeleteFz2Pms = React.useCallback(
   //   async input => {
   //     return deleteFz2Pms(input);
@@ -122,6 +122,14 @@ const FZ2PMSReadSingleView = props => {
       loadingAlert();
       const { eventId } = match.params;
       const event = await fetchOneEvent({ eventId: eventId });
+      const { attendees } = event;
+      const userEmail = userInContext.user.email;
+      if (attendees.length) {
+        const showButton = !attendees.some(
+          attendee => attendee.email === userEmail
+        );
+        setShowJoinButton(showButton);
+      }
       setEvent(event);
       hideAlert();
     };
@@ -159,13 +167,17 @@ const FZ2PMSReadSingleView = props => {
                   >
                     Edit
                   </Button>
-                  <Button
-                    color="warning"
-                    className={classes.formButton}
-                    onClick={() => pledgeEventAlert(event)}
-                  >
-                    Pledge to join!
-                  </Button>
+                  {showJoinButton ? (
+                    <Button
+                      color="warning"
+                      className={classes.formButton}
+                      onClick={() => pledgeEventAlert(event)}
+                    >
+                      Pledge to join!
+                    </Button>
+                  ) : (
+                    ""
+                  )}
                   {/* <Button
                     color="danger"
                     className={classes.formButton}

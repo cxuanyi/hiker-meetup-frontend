@@ -29,6 +29,7 @@ const EventReadListView = props => {
   const [alert, setAlert] = React.useState(null);
   const [allEventList, setAllEventList] = React.useState();
   const { fetchAllEvents } = useEventApi();
+  const [highlightEventId, setHighlightEventId] = React.useState("");
 
   const loadingAlert = React.useCallback(() => {
     setAlert(<LoadingAlert {...props} setAlert={setAlert} />);
@@ -38,9 +39,10 @@ const EventReadListView = props => {
   };
 
   const dataMapper = React.useCallback(
-    inputArray => {
+    (inputArray, eventId) => {
       const outputArray = inputArray.map((object, sn) => {
         const { id } = object;
+        const highlightRow = id === eventId ? true : false;
         const startDate = getISOToDateString(object.startDateTime);
         const endDate = getISOToDateString(object.endDateTime);
         const actions = (
@@ -60,6 +62,7 @@ const EventReadListView = props => {
           ...object,
           ...{
             sn: sn + 1,
+            highlightRow: highlightRow ? "***" : "",
             organizer: object.organizer.name,
             startDate: startDate,
             endDate: endDate,
@@ -82,13 +85,17 @@ const EventReadListView = props => {
         disableFilters: true
       },
       {
+        accessor: "highlightRow",
+        disableFilters: true
+      },
+      {
         Header: "Organizer",
         accessor: "organizer",
         filter: "fuzzyText"
       },
       {
         Header: "Event Title",
-        accessor: "name ",
+        accessor: "name",
         filter: "fuzzyText"
       },
       {
@@ -135,13 +142,15 @@ const EventReadListView = props => {
   const initializeDataCallback = React.useCallback(async () => {
     loadingAlert();
     const { eventId } = match.params;
-    console.log("eventId: ", eventId);
+    const eventIdToHighlight = eventId ? eventId : "";
+    setHighlightEventId(eventIdToHighlight);
+
     const responseObject = await fetchAllEvents();
     const embeddedObject = responseObject._embedded
       ? responseObject._embedded
       : null;
     const events = embeddedObject ? embeddedObject.events : [];
-    const eventsMapped = dataMapper(events);
+    const eventsMapped = dataMapper(events, eventId);
     setAllEventList(eventsMapped);
     hideAlert();
   }, [loadingAlert, dataMapper, match]);
@@ -163,7 +172,20 @@ const EventReadListView = props => {
         </GridItem>
         <GridItem lg={12}>
           {allEventList ? (
-            <ReactTable data={allEventList} columns={columns} />
+            <ReactTable
+              data={allEventList}
+              columns={columns}
+              defaultSorted={
+                highlightEventId
+                  ? [
+                      {
+                        id: "highlightRow",
+                        desc: true
+                      }
+                    ]
+                  : []
+              }
+            />
           ) : null}
         </GridItem>
       </GridContainer>

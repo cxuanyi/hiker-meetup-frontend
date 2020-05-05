@@ -16,12 +16,12 @@ import "./_rootAsset/css/react-tagsinput.css";
 // const store = createStore(rootReducer);
 const hist = createBrowserHistory();
 const webBaseUrl = window.location.origin;
-console.log(
-  "webBaseUrl:",
-  webBaseUrl,
-  `${webBaseUrl}/auth/login-page?transition=signing_in`,
-  `${webBaseUrl}/auth/login-page?transition=signing_out`
-);
+// console.log(
+//   "webBaseUrl:",
+//   webBaseUrl,
+//   `${webBaseUrl}/auth/login-page?transition=signing_in`,
+//   `${webBaseUrl}/auth/login-page?transition=signing_out`
+// );
 
 Amplify.configure({
   Auth: {

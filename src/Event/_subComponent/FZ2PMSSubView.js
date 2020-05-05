@@ -8,6 +8,7 @@ import Pageview from "@material-ui/icons/Pageview";
 // core components
 import GridContainer from "../../_rootComponent/Grid/GridContainer";
 import GridItem from "../../_rootComponent/Grid/GridItem";
+import TagsInput from "react-tagsinput";
 // style for this view
 import formStyle from "../../_rootAsset/jss/formStyle";
 // other
@@ -133,11 +134,20 @@ const FZ2PMSSubView = props => {
               </Typography>
             </GridItem>
             <GridItem lg={10}>
-              <p className={classes.viewText}>
-                {event.attendees.length
-                  ? event.attendees
-                  : "No hiker pledged yet ;.("}
-              </p>
+              {event.attendees.length > 0 ? (
+                event.attendees.map((attendee, index) => (
+                  <TagsInput
+                    key={index}
+                    value={[`${attendee.name}`]}
+                    disabled
+                    tagProps={{
+                      className: "react-tagsinput-tag warning"
+                    }}
+                  />
+                ))
+              ) : (
+                <p className={classes.viewText}>No hiker pledged yet ;.(</p>
+              )}
             </GridItem>
           </GridContainer>
         </GridItem>
