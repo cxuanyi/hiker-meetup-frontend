@@ -10,13 +10,12 @@ import GridContainer from "../_rootComponent/Grid/GridContainer";
 import GridItem from "../_rootComponent/Grid/GridItem";
 import Button from "../_rootComponent/CustomButtons/Button";
 // sub components
-// import FZ2PMSSubView from "./_subComponent/FZ2PMSSubView";
+import EventSubView from "./_subComponent/EventSubView";
 // style for this view
 import formStyle from "../_rootAsset/jss/formStyle";
 import sweetAlertStyle from "../_rootComponent/CustomAlert/jss/sweetAlertStyle";
 //others
 import useEventApi from "./_subApi/eventApi";
-import FZ2PMSSubView from "./_subComponent/FZ2PMSSubView";
 import DeleteAlert from "../_rootComponent/CustomAlert/DeleteAlert";
 import LoadingAlert from "../_rootComponent/CustomAlert/LoadingAlert";
 import PledgeEventAlert from "../_rootComponent/CustomAlert/PledgeEventAlert";
@@ -145,7 +144,7 @@ const FZ2PMSReadSingleView = props => {
         <GridContainer className={classes.parentContainer}>
           <GridItem lg={12}>
             <form>
-              <FZ2PMSSubView event={event} />
+              <EventSubView event={event} />
               <div className={classes.footer}>
                 <div className={classes.buttonLeft}>
                   <Button
