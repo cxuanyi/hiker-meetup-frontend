@@ -23,7 +23,7 @@ const useTestingApi = () => {
   };
   /* #endregion */
 
-  /* #region ######################## Create Full Event (includes pms, event, pmsfile)  ######################## */
+  /* #region ######################## Create Full Event ######################## */
   const createEvent = async () => {
     try {
       // Create Event & Upload File.

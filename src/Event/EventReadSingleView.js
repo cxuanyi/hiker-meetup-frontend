@@ -60,7 +60,7 @@ const EventReadSingleView = props => {
   //           history.push("/main/Events/ListEvents");
   //         }}
   //       >
-  //         You will not be able to recover this FZ2-PMS record!
+  //         You will not be able to recover this Event record!
   //       </DeleteAlert>
   //     );
   //   },

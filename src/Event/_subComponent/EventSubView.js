@@ -150,6 +150,16 @@ const EventSubView = props => {
               )}
             </GridItem>
           </GridContainer>
+          <GridContainer>
+            <GridItem lg={2}>
+              <Typography className={classes.labelHorizontalView}>
+                Event Itinerary:
+              </Typography>
+            </GridItem>
+            <GridItem lg={10}>
+              <p className={classes.viewText}>{event.description}</p>
+            </GridItem>
+          </GridContainer>
         </GridItem>
       </GridContainer>
     </Fragment>

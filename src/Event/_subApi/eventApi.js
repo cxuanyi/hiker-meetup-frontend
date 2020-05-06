@@ -32,7 +32,6 @@ const useEventApi = () => {
         {},
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log("responseData:", responseData);
 
       if (responseData.error) {
         throw new Error();
@@ -52,7 +51,7 @@ const useEventApi = () => {
   };
   /* #endregion */
 
-  /* #region ######################## Create Full Event (includes pms, event, pmsfile)  ######################## */
+  /* #region ######################## Create Full Event  ######################## */
   const createEvent = async () => {
     try {
       // Create Event & Upload File.

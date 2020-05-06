@@ -7,6 +7,7 @@ import LoginView from "./System/Authentication/LoginView";
 import DashboardView from "./General/DashboardView";
 import EventReadListView from "./Event/EventReadListView";
 import EventReadSingleView from "./Event/EventReadSingleView";
+import EventCreateForm from "./Event/EventCreateForm";
 
 import { generalModuleColor } from "./_rootAsset/jss/material-dashboard-react";
 
@@ -51,7 +52,7 @@ const useRouteApi = () => {
       name: "Create Event",
       icon: Create,
       moduleColor: generalModuleColor,
-      component: EventReadListView,
+      component: EventCreateForm,
       layout: "/main"
     }
   ];

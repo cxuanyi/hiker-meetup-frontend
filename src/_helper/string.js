@@ -1,18 +1,16 @@
-const formatPMSFileDisplayName = pmsOriginalFileName => {
-  let pmsNoDisplayTemp = pmsOriginalFileName;
-  const fileExtension = pmsNoDisplayTemp.substring(
-    pmsNoDisplayTemp.lastIndexOf(".")
+const formatEventFileDisplayName = eventOriginalFileName => {
+  let eventNoDisplayTemp = eventOriginalFileName;
+  const fileExtension = eventNoDisplayTemp.substring(
+    eventNoDisplayTemp.lastIndexOf(".")
   );
-  pmsNoDisplayTemp = pmsNoDisplayTemp.substring(
+  eventNoDisplayTemp = eventNoDisplayTemp.substring(
     0,
-    pmsNoDisplayTemp.lastIndexOf(".")
+    eventNoDisplayTemp.lastIndexOf(".")
   );
-  const pmsNoDisplayTempSplit = pmsNoDisplayTemp.split("_");
-  pmsNoDisplayTemp = `${pmsNoDisplayTempSplit[0]}-${
-    pmsNoDisplayTempSplit[1]
-  } Rev${pmsNoDisplayTempSplit[3]} (${fileExtension})`;
+  const eventNoDisplayTempSplit = eventNoDisplayTemp.split("_");
+  eventNoDisplayTemp = `${eventNoDisplayTempSplit[0]}-${eventNoDisplayTempSplit[1]} Rev${eventNoDisplayTempSplit[3]} (${fileExtension})`;
 
-  return pmsNoDisplayTemp;
+  return eventNoDisplayTemp;
 };
 
-export { formatPMSFileDisplayName };
+export { formatEventFileDisplayName };
