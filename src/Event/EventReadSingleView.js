@@ -24,7 +24,7 @@ import { UserContext } from "../_rootContext/UserContext";
 const useFormStyle = makeStyles(formStyle);
 const useSweetAlertStyle = makeStyles(sweetAlertStyle);
 
-const FZ2PMSReadSingleView = props => {
+const EventReadSingleView = props => {
   const { history, match } = props;
   const classes = { ...useFormStyle(), ...useSweetAlertStyle() };
   const [event, setEvent] = React.useState();
@@ -32,20 +32,20 @@ const FZ2PMSReadSingleView = props => {
   const [alert, setAlert] = React.useState(null);
   const { userInContext } = React.useContext(UserContext);
   const [showJoinButton, setShowJoinButton] = React.useState(true);
-  // const postDeleteFz2Pms = React.useCallback(
+  // const postDeleteEvent = React.useCallback(
   //   async input => {
-  //     return deleteFz2Pms(input);
+  //     return deleteEvent(input);
   //   },
-  //   [deleteFz2Pms]
+  //   [deleteEvent]
   // );
   // const deleteCallback = React.useCallback(async () => {
-  //   return await postDeleteFz2Pms(fz2);
-  // }, [postDeleteFz2Pms, fz2]);
+  //   return await postDeleteEvent(event);
+  // }, [postDeleteEvent, event]);
   const loadingAlert = React.useCallback(() => {
     setAlert(<LoadingAlert {...props} setAlert={setAlert} />);
   }, [props]);
   // const deleteAlert = React.useCallback(
-  //   fz2_id => {
+  //   event_id => {
   //     setAlert(
   //       <DeleteAlert
   //         {...props}
@@ -53,11 +53,11 @@ const FZ2PMSReadSingleView = props => {
   //         confirmBtnCssClass={classes.button + " " + classes.success}
   //         cancelBtnCssClass={classes.button + " " + classes.danger}
   //         deleteCallback={async () => {
-  //           const callbackResult = await deleteCallback(fz2_id);
+  //           const callbackResult = await deleteCallback(event_id);
   //           return callbackResult;
   //         }}
   //         redirectCallback={() => {
-  //           history.push("/main/ORFManagement/FZ2PMSReadList");
+  //           history.push("/main/Events/ListEvents");
   //         }}
   //       >
   //         You will not be able to recover this FZ2-PMS record!
@@ -159,9 +159,7 @@ const FZ2PMSReadSingleView = props => {
                     color="success"
                     className={classes.formButton}
                     onClick={() => {
-                      history.push(
-                        `/main/ORFManagement/FZ2PMSReadList/FZ2PMSUpdate/${event.id}`
-                      );
+                      history.push(`/main/Events/ViewEvent/${event.id}`);
                     }}
                   >
                     Edit
@@ -198,10 +196,10 @@ const FZ2PMSReadSingleView = props => {
   );
 };
 
-FZ2PMSReadSingleView.propTypes = {
+EventReadSingleView.propTypes = {
   history: PropTypes.object,
   match: PropTypes.object,
   children: PropTypes.node
 };
 
-export default withRouter(FZ2PMSReadSingleView);
+export default withRouter(EventReadSingleView);

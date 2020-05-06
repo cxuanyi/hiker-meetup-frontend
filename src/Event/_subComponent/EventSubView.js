@@ -16,7 +16,7 @@ import { getISOToDateString } from "../../_helper/date";
 
 const useFormStyle = makeStyles(formStyle);
 
-const FZ2PMSSubView = props => {
+const EventSubView = props => {
   const { event } = props;
   const classes = { ...useFormStyle() };
 
@@ -156,11 +156,11 @@ const FZ2PMSSubView = props => {
   );
 };
 
-FZ2PMSSubView.propTypes = {
+EventSubView.propTypes = {
   history: PropTypes.object,
   dispatchValidate: PropTypes.func,
   event: PropTypes.object,
   children: PropTypes.node
 };
 
-export default FZ2PMSSubView;
+export default EventSubView;

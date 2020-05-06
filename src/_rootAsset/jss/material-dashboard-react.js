@@ -99,7 +99,7 @@ const alternateHeaderRowColor = "#e8e8e8";
 const alternateTableRowColor = "#f8f8f8";
 
 const generalModuleColor = "#8CC152";
-const orfModuleColor = "#004F9A";
+const eventModuleColor = "#004F9A";
 
 const warningCardHeader = {
   background:
@@ -142,7 +142,7 @@ export {
   alternateBgColor,
   informativeBgColor,
   generalModuleColor,
-  orfModuleColor,
+  eventModuleColor,
   warningCardHeader,
   successCardHeader,
   dangerCardHeader,

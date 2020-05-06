@@ -186,14 +186,11 @@ class Sidebar extends React.Component {
         <Drawer anchor="left" variant="permanent">
           <div className={classes.sidebarWrapper}>
             <div className={classes.logo}>
-              <Link to="/main/ORFManagement/FZ2PMSReadList">
+              <Link to="/main/General/Dashboard">
                 <img src={logo} alt="logo" className={classes.img} />
               </Link>
-              <Link
-                className={classes.logoNormal}
-                to="/main/ORFManagement/FZ2PMSReadList"
-              >
-                Hikers' Meet-Up
+              <Link className={classes.logoNormal} to="/main/General/Dashboard">
+                Hikers&apos; Meet-Up
               </Link>
             </div>
             <Divider />

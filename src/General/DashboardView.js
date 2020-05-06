@@ -15,12 +15,12 @@ import Table from "../_rootComponent/Table/Table";
 // style for this view
 import formStyle from "../_rootAsset/jss/formStyle";
 // others
-import useFz2Api from "./_subApi/fz2Api";
+import useTestingApi from "./_subApi/testingApi";
 import { UserContext } from "../_rootContext/UserContext";
 
 const useFormStyle = makeStyles(formStyle);
 
-const DepartmentTaskReadSingleView = () => {
+const DashboardView = () => {
   const classes = { ...useFormStyle() };
   const acronymHeader = [
     "S/N",
@@ -37,7 +37,7 @@ const DepartmentTaskReadSingleView = () => {
       "Friends"
     ]
   ];
-  const { fetchAllEvents, createEvent, fetchAllUsers } = useFz2Api(); // eslint-disable-line
+  const { fetchAllEvents, createEvent, fetchAllUsers } = useTestingApi(); // eslint-disable-line
   const { userInContext } = React.useContext(UserContext);
 
   React.useEffect(() => {
@@ -65,7 +65,7 @@ const DepartmentTaskReadSingleView = () => {
             <GridContainer>
               <GridItem>
                 <p className={classes.title}>
-                  Welcome to Hikers`&apos` Meet-Up, this is where hikers meet.
+                  Welcome to Hikers&apos; Meet-Up, this is where hikers meet.
                 </p>
                 <div className={classes.iconWrapper}>
                   <DashboardIcon fontSize="small" />
@@ -104,11 +104,11 @@ const DepartmentTaskReadSingleView = () => {
   );
 };
 
-DepartmentTaskReadSingleView.propTypes = {
+DashboardView.propTypes = {
   history: PropTypes.object,
   match: PropTypes.object,
   location: PropTypes.object,
   children: PropTypes.node
 };
 
-export default withRouter(DepartmentTaskReadSingleView);
+export default withRouter(DashboardView);

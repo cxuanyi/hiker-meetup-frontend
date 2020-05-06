@@ -1,6 +1,7 @@
 // @material-ui/icons
 import Apps from "@material-ui/icons/Apps";
 import Event from "@material-ui/icons/Event";
+import Create from "@material-ui/icons/Create";
 // Views
 import LoginView from "./System/Authentication/LoginView";
 import DashboardView from "./General/DashboardView";
@@ -44,6 +45,14 @@ const useRouteApi = () => {
       component: EventReadSingleView,
       layout: "/main",
       invisible: true
+    },
+    {
+      path: "/Events/CreateEvent",
+      name: "Create Event",
+      icon: Create,
+      moduleColor: generalModuleColor,
+      component: EventReadListView,
+      layout: "/main"
     }
   ];
 

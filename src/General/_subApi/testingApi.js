@@ -1,6 +1,6 @@
 import useORMSAxios from "../../_axios/ormsAxios";
 
-const useFz2Api = () => {
+const useTestingApi = () => {
   const {
     ormsAxiosPostRequest,
     ormsAxiosGetRequest
@@ -23,10 +23,10 @@ const useFz2Api = () => {
   };
   /* #endregion */
 
-  /* #region ######################## Create Full Fz2 (includes pms, fz2pms, pmsfile)  ######################## */
+  /* #region ######################## Create Full Event (includes pms, event, pmsfile)  ######################## */
   const createEvent = async () => {
     try {
-      // Create Fz2 & Upload File.
+      // Create Event & Upload File.
       const responseData = await ormsAxiosPostRequest(
         "/events",
         {
@@ -75,4 +75,4 @@ const useFz2Api = () => {
   };
 };
 
-export default useFz2Api;
+export default useTestingApi;

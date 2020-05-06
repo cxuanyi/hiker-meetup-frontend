@@ -11,7 +11,7 @@ import {
   title
 } from "./material-dashboard-react";
 
-const orfFormStyle = {
+const eventFormStyle = {
   parentContainer: {
     paddingLeft: "10px",
     paddingRight: "10px"
@@ -339,4 +339,4 @@ const orfFormStyle = {
   }
 };
 
-export default orfFormStyle;
+export default eventFormStyle;

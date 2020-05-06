@@ -52,10 +52,10 @@ const useEventApi = () => {
   };
   /* #endregion */
 
-  /* #region ######################## Create Full Fz2 (includes pms, fz2pms, pmsfile)  ######################## */
+  /* #region ######################## Create Full Event (includes pms, event, pmsfile)  ######################## */
   const createEvent = async () => {
     try {
-      // Create Fz2 & Upload File.
+      // Create Event & Upload File.
       const responseData = await ormsAxiosPostRequest(
         "/events",
         {

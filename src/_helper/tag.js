@@ -1,8 +1,8 @@
 // @material-ui/core components;
-import useFz2Api from "../ORFManagement/_subApi/fz2Api";
+import useTestingApi from "../General/_subApi/testingApi";
 
 const useTagHelper = () => {
-  const { fetchOneFile } = useFz2Api();
+  const { fetchOneFile } = useTestingApi();
 
   const tagOnClickFetchFile = (e, file) => {
     let fireOnClick = async () => {
