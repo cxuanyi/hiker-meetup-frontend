@@ -31,7 +31,7 @@ const EventReadSingleView = props => {
   const { fetchOneEvent, postPledgeEvent } = useEventApi();
   const [alert, setAlert] = React.useState(null);
   const { userInContext } = React.useContext(UserContext);
-  const [showJoinButton, setShowJoinButton] = React.useState(true);
+  const [hideJoinButton, setHideJoinButton] = React.useState(true);
   // const postDeleteEvent = React.useCallback(
   //   async input => {
   //     return deleteEvent(input);
@@ -123,12 +123,10 @@ const EventReadSingleView = props => {
       const event = await fetchOneEvent({ eventId: eventId });
       const { attendees } = event;
       const userEmail = userInContext.user.email;
-      if (attendees.length) {
-        const showButton = !attendees.some(
-          attendee => attendee.email === userEmail
-        );
-        setShowJoinButton(showButton);
-      }
+      const hideButton =
+        attendees.some(attendee => attendee.email === userEmail) ||
+        event.eventStatus !== "PENDING";
+      setHideJoinButton(hideButton);
       setEvent(event);
       hideAlert();
     };
@@ -164,7 +162,9 @@ const EventReadSingleView = props => {
                   >
                     Edit
                   </Button>
-                  {showJoinButton ? (
+                  {hideJoinButton ? (
+                    ""
+                  ) : (
                     <Button
                       color="warning"
                       className={classes.formButton}
@@ -172,8 +172,6 @@ const EventReadSingleView = props => {
                     >
                       Pledge to join!
                     </Button>
-                  ) : (
-                    ""
                   )}
                   {/* <Button
                     color="danger"
