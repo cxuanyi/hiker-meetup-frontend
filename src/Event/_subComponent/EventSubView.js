@@ -27,7 +27,6 @@ const EventSubView = props => {
       currentUrl.includes("CreateEvent") ||
       currentUrl.includes("UpdateEvent")
     ) {
-      console.log("EventSubView:", "Hu Tiu Yi Wan");
       dispatchValidate({
         action: FORM_SUBMIT_CHECK_READY,
         payload: {}

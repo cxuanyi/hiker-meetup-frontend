@@ -35,8 +35,13 @@ const EventSubForm = props => {
     value
       ? setFieldsStatus({ ...fieldsStatus, [name]: 2 })
       : setFieldsStatus({ ...fieldsStatus, [name]: 1 });
+    let eventTemp = { ...event, [name]: value };
 
-    setEvent({ ...event, [name]: value });
+    if (name === "minAttendees" && isNaN(value)) {
+      eventTemp = { ...event, [name]: value.slice(0, -1) };
+    }
+
+    setEvent(eventTemp);
     dispatchValidate({
       action: FORM1_CHECK_READY,
       payload: {

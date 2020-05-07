@@ -15,6 +15,7 @@ import formStyle from "../_rootAsset/jss/formStyle";
 import sweetAlertStyle from "../_rootComponent/CustomAlert/jss/sweetAlertStyle";
 //others
 import useEventApi from "./_subApi/eventApi";
+
 import {
   eventTemplate,
   fieldsStatusTemplate
@@ -73,16 +74,16 @@ const EventCreateForm = props => {
   }, [classes.success, classes.button, classes.danger, props, history]);
   /* #endregion */
 
-  /* #region ############ postCreateEvent, createCallback, createAlert ############ */
-  const postCreateEvent = React.useCallback(
-    async input => {
-      return createEvent(input);
-    },
-    [createEvent]
-  );
-  const createCallback = React.useCallback(async () => {
-    return await postCreateEvent(event);
-  }, [postCreateEvent, event]);
+  /* #region ############ postCreateEvent, createEventCallback, createAlert ############ */
+  const createEventCallback = React.useCallback(async () => {
+    let eventTemp = {
+      ...event,
+      minAttendees: parseInt(event.minAttendees),
+      startDateTime: new Date(event.startDateTime).toISOString(),
+      endDateTime: new Date(event.endDateTime).toISOString()
+    };
+    return await createEvent(eventTemp);
+  }, [createEvent, event]);
   const createAlert = React.useCallback(() => {
     setAlert(
       <CreateAlert
@@ -91,14 +92,15 @@ const EventCreateForm = props => {
         confirmBtnCssClass={classes.button + " " + classes.success}
         cancelBtnCssClass={classes.button + " " + classes.danger}
         createCallback={async () => {
-          const callbackResult = await createCallback();
+          const callbackResult = await createEventCallback();
           return callbackResult;
         }}
-        redirectCallback={() => {
-          history.push("/main/Events/EventReadList");
+        redirectCallback={inputId => {
+          const baseRedirect = "/main/Events/ListEvents";
+          history.push(inputId ? `${baseRedirect}/${inputId}` : inputId);
         }}
       >
-        New Event record will be created, you sure?
+        New Event will be created, you sure?
       </CreateAlert>
     );
   }, [
@@ -107,7 +109,7 @@ const EventCreateForm = props => {
     classes.button,
     props,
     history,
-    createCallback
+    createEventCallback
   ]);
   /* #endregion */
 

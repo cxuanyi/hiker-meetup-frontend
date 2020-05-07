@@ -55,13 +55,14 @@ const useEventApi = () => {
   const createEvent = async event => {
     try {
       // Create Event & Upload File.
-      const responseData = { data: "bubuchou" };
-      console.log("createEvent:", event);
+      const responseData = await ormsAxiosPostRequest("/events", event, {
+        headers: { "Content-Type": "application/json" }
+      });
+
       // backend return failure to create
       if (responseData.error) {
         throw new Error();
       }
-
       return responseData;
     } catch (error) {
       return { error: 1 };

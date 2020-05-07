@@ -30,7 +30,7 @@ const CreateAlert = props => {
     );
   };
 
-  const successCreate = () => {
+  const successCreate = createResult => {
     setAlert(
       <SweetAlert
         success
@@ -38,7 +38,7 @@ const CreateAlert = props => {
         confirmBtnCssClass={confirmBtnCssClass}
         title="Created!"
         onConfirm={() => {
-          redirectCallback();
+          redirectCallback(createResult.id);
           hideAlert();
         }}
         onCancel={() => hideAlert()}
@@ -100,7 +100,7 @@ const CreateAlert = props => {
         loadingCreate();
         const createResult = await createCallback();
         if (createResult.error) failureCreate();
-        else successCreate();
+        else successCreate(createResult);
       }}
       onCancel={() => cancelCreate()}
       showCancel
