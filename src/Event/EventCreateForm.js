@@ -46,7 +46,15 @@ const EventCreateForm = props => {
 
   const [fieldsStatus, setFieldsStatus] = React.useState(fieldsStatusTemplate);
 
-  /********************** Start of Hooks Section **********************/
+  /* #region ############ initializeData ############ */
+  React.useEffect(() => {
+    const initializeData = async () => {};
+    initializeData();
+    // eslint-disable-next-line
+  }, []);
+  /* #endregion */
+
+  /* #region ############ cancelAlert ############ */
   const cancelAlert = React.useCallback(() => {
     setAlert(
       <CancelAlert
@@ -56,13 +64,16 @@ const EventCreateForm = props => {
         cancelBtnCssClass={classes.button + " " + classes.danger}
         cancelCallback={() => {
           hideAlert();
-          history.push("/main/ORFManagement/EventReadList");
+          history.push("/main/Events/EventReadList");
         }}
       >
         You will lose the entered information!
       </CancelAlert>
     );
   }, [classes.success, classes.button, classes.danger, props, history]);
+  /* #endregion */
+
+  /* #region ############ postCreateEvent, createCallback, createAlert ############ */
   const postCreateEvent = React.useCallback(
     async input => {
       return createEvent(input);
@@ -70,7 +81,7 @@ const EventCreateForm = props => {
     [createEvent]
   );
   const createCallback = React.useCallback(async () => {
-    return await postCreateEvent({ event: event });
+    return await postCreateEvent(event);
   }, [postCreateEvent, event]);
   const createAlert = React.useCallback(() => {
     setAlert(
@@ -84,7 +95,7 @@ const EventCreateForm = props => {
           return callbackResult;
         }}
         redirectCallback={() => {
-          history.push("/main/ORFManagement/EventReadList");
+          history.push("/main/Events/EventReadList");
         }}
       >
         New Event record will be created, you sure?
@@ -98,17 +109,17 @@ const EventCreateForm = props => {
     history,
     createCallback
   ]);
-  //################################ Start ##########################################
+  /* #endregion */
+
+  /* #region ############ formValidityReducer, formValidityState, dispatchValidate ############ */
   const formValidityReducer = React.useCallback(
     (state, { action, payload }) => {
-      let somePmsHasNoFiles = false;
       let someFormsNotOk = false;
       switch (action) {
         case FORM_INITIAL_STATE:
           return {
             status: FORM_INITIAL_STATE,
-            isFormsEntriesOk: { 1: false },
-            isEventFilesOk: false
+            isFormsEntriesOk: { 1: false }
           };
         case FORM1_CHECK_READY:
           if (payload.formNo) {
@@ -127,15 +138,10 @@ const EventCreateForm = props => {
           }
           return { ...state };
         case FORM_SUBMIT_CHECK_READY:
-          somePmsHasNoFiles = payload.eventFileList
-            ? Object.keys(payload.eventFileList).some(key => {
-                return payload.eventFileList[key].files.length === 0;
-              })
-            : [];
           someFormsNotOk = Object.keys(state.isFormsEntriesOk).some(key => {
             return state.isFormsEntriesOk[key] === false;
           });
-          return !somePmsHasNoFiles && !someFormsNotOk
+          return !someFormsNotOk
             ? { ...state, status: FORM_SUBMIT_CHECK_READY }
             : { ...state };
         default:
@@ -148,11 +154,12 @@ const EventCreateForm = props => {
     formValidityReducer,
     {
       status: FORM_INITIAL_STATE,
-      isFormsEntriesOk: { 1: false },
-      isEventFilesOk: false
+      isFormsEntriesOk: { 1: false }
     }
   );
-  //################################ END ##########################################
+  /* #endregion */
+
+  /* #region ############ submitReducer, createNewEventState, dispatchSubmit ############ */
   const submitReducer = React.useCallback((state, { action, payload }) => {
     switch (action) {
       case READY_TO_SUBMIT:
@@ -169,25 +176,20 @@ const EventCreateForm = props => {
         throw new Error();
     }
   }, []);
-  const [
-    createNewEventPmsState,
-    dispatchSubmit
-  ] = React.useReducer(submitReducer, { status: READY_TO_SUBMIT });
-
+  const [createNewEventState, dispatchSubmit] = React.useReducer(
+    submitReducer,
+    { status: READY_TO_SUBMIT }
+  );
   React.useEffect(() => {
     (async () => {
-      if (createNewEventPmsState.status === SUBMIT_EVENT) {
+      if (createNewEventState.status === SUBMIT_EVENT) {
         dispatchSubmit({ action: READY_TO_SUBMIT });
       }
     })();
-  }, [createNewEventPmsState]);
-  /* #useEffect for loading data upfront */
-  React.useEffect(() => {
-    const initializeData = async () => {};
-    initializeData();
-    // eslint-disable-next-line
-  }, []);
-  /********************** Start of Other Functions Section **********************/
+  }, [createNewEventState]);
+  /* #endregion */
+
+  /* #region ############ nextPrevHandler ############ */
   const nextPrevHandler = () => {
     if (currentPage === 1) {
       const eventTemp = { ...event };
@@ -209,8 +211,9 @@ const EventCreateForm = props => {
   const hideAlert = () => {
     setAlert(null);
   };
+  /* #endregion */
 
-  /********************** View Rendering Section **********************/
+  /* #region ############ View Rendering Section ############ */
   const renderSubForms = currentPage => {
     switch (currentPage) {
       case 1:
@@ -221,14 +224,18 @@ const EventCreateForm = props => {
             fieldsStatus={fieldsStatus}
             setFieldsStatus={setFieldsStatus}
             event={event}
+            setEvent={setEvent}
           />
         );
       case 2:
-        return <EventSubView event={event} />;
+        return (
+          <EventSubView dispatchValidate={dispatchValidate} event={event} />
+        );
       default:
         return "";
     }
   };
+
   return (
     <div>
       {alert}
@@ -243,7 +250,7 @@ const EventCreateForm = props => {
                   className={classes.formButton}
                   onClick={() => cancelAlert()}
                 >
-                  Cancel Create
+                  Cancel
                 </Button>
               </div>
               <div className={classes.right}>
@@ -269,7 +276,7 @@ const EventCreateForm = props => {
                       dispatchSubmit({ action: SUBMIT_EVENT });
                     }}
                   >
-                    Create Event Record
+                    Create
                   </Button>
                 )}
                 {currentPage > minPage ? (
@@ -281,7 +288,7 @@ const EventCreateForm = props => {
                         : setCurrentPage(currentPage)
                     }
                   >
-                    Previous
+                    Prev
                   </Button>
                 ) : (
                   ""
@@ -293,6 +300,7 @@ const EventCreateForm = props => {
       </GridContainer>
     </div>
   );
+  /* #endregion */
 };
 
 EventCreateForm.propTypes = {

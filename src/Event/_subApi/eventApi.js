@@ -52,38 +52,11 @@ const useEventApi = () => {
   /* #endregion */
 
   /* #region ######################## Create Full Event  ######################## */
-  const createEvent = async () => {
+  const createEvent = async event => {
     try {
       // Create Event & Upload File.
-      const responseData = await ormsAxiosPostRequest(
-        "/events",
-        {
-          startDateTime: "2020-04-03T15:10:39",
-          organizer: "Chen, Xuanyi",
-          attendees: [],
-          minAttendees: 5,
-          followers: [],
-          eventStatus: "PENDING",
-          category: "category",
-          endDateTime: "2020-04-03T15:10:39",
-          name: "name",
-          location: "location",
-          _links: {
-            self: {
-              href:
-                "http://ec2-13-229-200-236.ap-southeast-1.compute.amazonaws.com/events/fdc552e3-2ae0-45d2-b154-f2e37a7bb0a0"
-            },
-            events: {
-              href:
-                "http://ec2-13-229-200-236.ap-southeast-1.compute.amazonaws.com/events"
-            }
-          }
-        },
-        {
-          headers: { "Content-Type": "application/json" }
-        }
-      );
-
+      const responseData = { data: "bubuchou" };
+      console.log("createEvent:", event);
       // backend return failure to create
       if (responseData.error) {
         throw new Error();

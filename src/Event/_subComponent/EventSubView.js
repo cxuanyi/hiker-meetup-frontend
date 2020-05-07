@@ -12,15 +12,27 @@ import TagsInput from "react-tagsinput";
 // style for this view
 import formStyle from "../../_rootAsset/jss/formStyle";
 // other
+import { FORM_SUBMIT_CHECK_READY } from "../_subAction/createEventAction";
 import { getISOToDateString } from "../../_helper/date";
 
 const useFormStyle = makeStyles(formStyle);
 
 const EventSubView = props => {
-  const { event } = props;
+  const { dispatchValidate, event } = props;
   const classes = { ...useFormStyle() };
 
   React.useEffect(() => {
+    const currentUrl = window.location.href;
+    if (
+      currentUrl.includes("CreateEvent") ||
+      currentUrl.includes("UpdateEvent")
+    ) {
+      console.log("EventSubView:", "Hu Tiu Yi Wan");
+      dispatchValidate({
+        action: FORM_SUBMIT_CHECK_READY,
+        payload: {}
+      });
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -50,7 +62,9 @@ const EventSubView = props => {
               </Typography>
             </GridItem>
             <GridItem lg={10}>
-              <p className={classes.viewText}>{event.id}</p>
+              <p className={classes.viewText}>
+                {event.id ? event.id : "Chill! Not available yet!"}
+              </p>
             </GridItem>
           </GridContainer>
           <GridContainer>
@@ -63,14 +77,18 @@ const EventSubView = props => {
               <p className={classes.viewText}>{event.name}</p>
             </GridItem>
           </GridContainer>
-          <GridContainer>
+          <GridContainer className={classes.gridAlternateBgColor}>
             <GridItem lg={2}>
               <Typography className={classes.labelHorizontalView}>
                 Organizer:
               </Typography>
             </GridItem>
             <GridItem lg={10}>
-              <p className={classes.viewText}>{event.organizer.name}</p>
+              <p className={classes.viewText}>
+                {event.organizer && event.organizer.name
+                  ? event.organizer.name
+                  : "You. Yes, you."}
+              </p>
             </GridItem>
           </GridContainer>
           <GridContainer>
@@ -85,7 +103,7 @@ const EventSubView = props => {
               </p>
             </GridItem>
           </GridContainer>
-          <GridContainer>
+          <GridContainer className={classes.gridAlternateBgColor}>
             <GridItem lg={2}>
               <Typography className={classes.labelHorizontalView}>
                 End Date:
@@ -104,10 +122,14 @@ const EventSubView = props => {
               </Typography>
             </GridItem>
             <GridItem lg={10}>
-              <p className={classes.viewText}>{event.eventStatus}</p>
+              <p className={classes.viewText}>
+                {event.eventStatus
+                  ? event.eventStatus
+                  : "Available to be soon."}
+              </p>
             </GridItem>
           </GridContainer>
-          <GridContainer>
+          <GridContainer className={classes.gridAlternateBgColor}>
             <GridItem lg={2}>
               <Typography className={classes.labelHorizontalView}>
                 Minimum Pledged Hiker(s):
@@ -124,17 +146,21 @@ const EventSubView = props => {
               </Typography>
             </GridItem>
             <GridItem lg={10}>
-              <p className={classes.viewText}>{event.attendees.length}</p>
+              <p className={classes.viewText}>
+                {event.attendees && event.attendees.length
+                  ? event.attendees.length
+                  : "Depends on your charm."}
+              </p>
             </GridItem>
           </GridContainer>
-          <GridContainer>
+          <GridContainer className={classes.gridAlternateBgColor}>
             <GridItem lg={2}>
               <Typography className={classes.labelHorizontalView}>
                 Who Pledged:
               </Typography>
             </GridItem>
             <GridItem lg={10}>
-              {event.attendees.length > 0 ? (
+              {event.attendees && event.attendees.length > 0 ? (
                 event.attendees.map((attendee, index) => (
                   <TagsInput
                     key={index}

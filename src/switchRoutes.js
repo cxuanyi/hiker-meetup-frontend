@@ -17,14 +17,7 @@ export default function SwitchRoutes() {
           <Route path="/auth/logout-page" component={AuthLayout} />
           {/* <Redirect from="/" to="/main/General/Dashboard" /> */}
           <Redirect from="/" to="/main/Events/ListEvents" />
-          {/* <Redirect
-            from="/"
-            to="/main/Events/ViewEvent/cd4663b0-7969-468d-9a2e-ed7ea07e91b6"
-          /> */}
-          {/* <Redirect
-            from="/"
-            to="/main/Events/ListEvents/cd4663b0-7969-468d-9a2e-ed7ea07e91b6"
-          /> */}
+          <Redirect from="/" to="/main/Events/CreateEvent" />
         </Fragment>
       ) : (
         <Fragment>

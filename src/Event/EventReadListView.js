@@ -153,7 +153,7 @@ const EventReadListView = props => {
     const eventsMapped = dataMapper(events, eventId);
     setAllEventList(eventsMapped);
     hideAlert();
-  }, [loadingAlert, dataMapper, match]);
+  }, [loadingAlert, dataMapper, match, fetchAllEvents]);
 
   React.useEffect(() => {
     initializeDataCallback();
