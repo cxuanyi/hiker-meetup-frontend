@@ -15,12 +15,11 @@ import formStyle from "../_rootAsset/jss/formStyle";
 import sweetAlertStyle from "../_rootComponent/CustomAlert/jss/sweetAlertStyle";
 //others
 import useEventApi from "./_subApi/eventApi";
-
 import {
   eventTemplate,
   fieldsStatusTemplate
 } from "./_subHelper/eventObjTemplate";
-import CreateAlert from "../_rootComponent/CustomAlert/CreateAlert";
+import UpdateAlert from "../_rootComponent/CustomAlert/UpdateAlert";
 import CancelAlert from "../_rootComponent/CustomAlert/CancelAlert";
 import {
   FORM_INITIAL_STATE,
@@ -30,26 +29,55 @@ import {
   SUBMIT_EVENT,
   SUBMISSION_SUCCESS
 } from "./_subAction/eventAction";
+import { setAllValOf1LvlObj } from "../_helper/object";
 
 const useFormStyle = makeStyles(formStyle);
 const useSweetAlertStyle = makeStyles(sweetAlertStyle);
 
-const EventCreateForm = props => {
-  const { history } = props;
+const EventEditForm = props => {
+  const { history, match } = props;
   const classes = { ...useFormStyle(), ...useSweetAlertStyle() };
   const startPage = 1;
   const minPage = 1;
   const maxPage = 2;
-  const { createEvent } = useEventApi();
+  const editFieldsStatusTemplate = setAllValOf1LvlObj(fieldsStatusTemplate, 2);
+  const { fetchOneEvent, updateEvent } = useEventApi();
   const [alert, setAlert] = React.useState(null);
   const [currentPage, setCurrentPage] = React.useState(startPage);
   const [event, setEvent] = React.useState(eventTemplate);
 
-  const [fieldsStatus, setFieldsStatus] = React.useState(fieldsStatusTemplate);
+  const [fieldsStatus, setFieldsStatus] = React.useState(
+    editFieldsStatusTemplate
+  );
 
   /* #region ############ initializeData ############ */
   React.useEffect(() => {
-    const initializeData = async () => {};
+    const initializeData = async () => {
+      const { eventId } = match.params;
+      let eventTemp = await fetchOneEvent({ eventId: eventId });
+
+      eventTemp = {
+        ...eventTemp,
+        startDateTime: new Date(eventTemp.startDateTime),
+        endDateTime: new Date(eventTemp.endDateTime)
+      };
+
+      dispatchValidate({
+        action: FORM1_CHECK_READY,
+        payload: {
+          formNo: 1,
+          fieldsStatus: fieldsStatus
+        }
+      });
+      dispatchValidate({
+        action: FORM_SUBMIT_CHECK_READY,
+        payload: {
+          formNo: 1,
+          fieldsStatus: fieldsStatus
+        }
+      });
+      setEvent(eventTemp);
+    };
     initializeData();
     // eslint-disable-next-line
   }, []);
@@ -74,25 +102,25 @@ const EventCreateForm = props => {
   }, [classes.success, classes.button, classes.danger, props, history]);
   /* #endregion */
 
-  /* #region ############ postCreateEvent, createEventCallback, createAlert ############ */
-  const createEventCallback = React.useCallback(async () => {
+  /* #region ############ postUpdateEvent, updateEventCallback, updateAlert ############ */
+  const updateEventCallback = React.useCallback(async () => {
     let eventTemp = {
       ...event,
       minAttendees: parseInt(event.minAttendees),
       startDateTime: new Date(event.startDateTime).toISOString(),
       endDateTime: new Date(event.endDateTime).toISOString()
     };
-    return await createEvent(eventTemp);
-  }, [createEvent, event]);
-  const createAlert = React.useCallback(() => {
+    return await updateEvent(eventTemp);
+  }, [updateEvent, event]);
+  const updateAlert = React.useCallback(() => {
     setAlert(
-      <CreateAlert
+      <UpdateAlert
         {...props}
         setAlert={setAlert}
         confirmBtnCssClass={classes.button + " " + classes.success}
         cancelBtnCssClass={classes.button + " " + classes.danger}
-        createCallback={async () => {
-          const callbackResult = await createEventCallback();
+        updateCallback={async () => {
+          const callbackResult = await updateEventCallback();
           return callbackResult;
         }}
         redirectCallback={inputId => {
@@ -100,8 +128,8 @@ const EventCreateForm = props => {
           history.push(inputId ? `${baseRedirect}/${inputId}` : inputId);
         }}
       >
-        New Event will be created, you sure?
-      </CreateAlert>
+        New Event will be updated, you sure?
+      </UpdateAlert>
     );
   }, [
     classes.danger,
@@ -109,7 +137,7 @@ const EventCreateForm = props => {
     classes.button,
     props,
     history,
-    createEventCallback
+    updateEventCallback
   ]);
   /* #endregion */
 
@@ -161,7 +189,7 @@ const EventCreateForm = props => {
   );
   /* #endregion */
 
-  /* #region ############ submitReducer, createNewEventState, dispatchSubmit ############ */
+  /* #region ############ submitReducer, updateNewEventState, dispatchSubmit ############ */
   const submitReducer = React.useCallback((state, { action, payload }) => {
     switch (action) {
       case READY_TO_SUBMIT:
@@ -178,17 +206,17 @@ const EventCreateForm = props => {
         throw new Error();
     }
   }, []);
-  const [createNewEventState, dispatchSubmit] = React.useReducer(
+  const [updateNewEventState, dispatchSubmit] = React.useReducer(
     submitReducer,
     { status: READY_TO_SUBMIT }
   );
   React.useEffect(() => {
     (async () => {
-      if (createNewEventState.status === SUBMIT_EVENT) {
+      if (updateNewEventState.status === SUBMIT_EVENT) {
         dispatchSubmit({ action: READY_TO_SUBMIT });
       }
     })();
-  }, [createNewEventState]);
+  }, [updateNewEventState]);
   /* #endregion */
 
   /* #region ############ nextPrevHandler ############ */
@@ -274,11 +302,11 @@ const EventCreateForm = props => {
                         : false
                     }
                     onClick={() => {
-                      createAlert();
+                      updateAlert();
                       dispatchSubmit({ action: SUBMIT_EVENT });
                     }}
                   >
-                    Create
+                    Save
                   </Button>
                 )}
                 {currentPage > minPage ? (
@@ -305,9 +333,10 @@ const EventCreateForm = props => {
   /* #endregion */
 };
 
-EventCreateForm.propTypes = {
+EventEditForm.propTypes = {
   history: PropTypes.object,
+  match: PropTypes.object,
   children: PropTypes.node
 };
 
-export default withRouter(EventCreateForm);
+export default withRouter(EventEditForm);

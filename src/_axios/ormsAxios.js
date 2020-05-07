@@ -6,8 +6,6 @@ const useORMSAxios = () => {
   const { userInContext } = React.useContext(UserContext);
   const baseUrl =
     "https://sd0y3a6t9b.execute-api.ap-southeast-1.amazonaws.com/production"; //web api
-    // "http://hiker-meetup-backend-user-alb-1450887440.ap-southeast-1.elb.amazonaws.com:4000/" //user direct
-    // "http://ec2-13-229-200-236.ap-southeast-1.compute.amazonaws.com"; // events direct
 
   const ormsAxios = axios.create({
     baseURL: baseUrl
@@ -90,6 +88,16 @@ const useORMSAxios = () => {
     }
   };
 
+  const ormsAxiosPatchRequest = async (url, body, header = {}) => {
+    try {
+      const responseData = await ormsAxios.patch(url, body, header);
+
+      return responseData.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const ormsGetUrl = (url, params = {}) => {
     let queryString = "";
     Object.keys(params).forEach((key, index) => {
@@ -111,6 +119,7 @@ const useORMSAxios = () => {
     ormsAxiosGetRequest,
     ormsAxiosGetFileRequest,
     ormsAxiosPutRequest,
+    ormsAxiosPatchRequest,
     ormsAxiosDeleteRequest,
     ormsGetUrl,
     ormsGetRequesterUser

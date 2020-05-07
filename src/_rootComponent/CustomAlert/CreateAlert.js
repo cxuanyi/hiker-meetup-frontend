@@ -43,7 +43,7 @@ const CreateAlert = props => {
         }}
         onCancel={() => hideAlert()}
       >
-        New record has been created.
+        New Event has been created.
       </SweetAlert>
     );
   };

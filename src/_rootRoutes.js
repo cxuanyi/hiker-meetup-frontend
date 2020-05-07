@@ -8,6 +8,7 @@ import DashboardView from "./General/DashboardView";
 import EventReadListView from "./Event/EventReadListView";
 import EventReadSingleView from "./Event/EventReadSingleView";
 import EventCreateForm from "./Event/EventCreateForm";
+import EventEditForm from "./Event/EventEditForm";
 
 import { generalModuleColor } from "./_rootAsset/jss/material-dashboard-react";
 
@@ -54,6 +55,15 @@ const useRouteApi = () => {
       moduleColor: generalModuleColor,
       component: EventCreateForm,
       layout: "/main"
+    },
+    {
+      path: "/Events/EditEvent/:eventId",
+      name: "Edit Event",
+      icon: Create,
+      moduleColor: generalModuleColor,
+      component: EventEditForm,
+      layout: "/main",
+      invisible: true
     }
   ];
 

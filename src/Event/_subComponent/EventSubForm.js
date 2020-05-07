@@ -16,7 +16,7 @@ import CustomInput from "../../_rootComponent/CustomInput/CustomInput";
 // style for this view
 import formStyle from "../../_rootAsset/jss/formStyle";
 // others
-import { FORM1_CHECK_READY } from "../_subAction/createEventAction";
+import { FORM1_CHECK_READY } from "../_subAction/eventAction";
 
 const useFormStyle = makeStyles(formStyle);
 
@@ -221,6 +221,7 @@ const EventSubForm = props => {
                     selected: event.startDateTime
                   }}
                   onChange={e => handleDateChange(e, "startDateTime")}
+                  value={event.startDateTime}
                   closeOnSelect
                 />
               </FormControl>
@@ -257,6 +258,7 @@ const EventSubForm = props => {
                     selected: event.endDateTime
                   }}
                   onChange={e => handleDateChange(e, "endDateTime")}
+                  value={event.endDateTime}
                   closeOnSelect
                 />
               </FormControl>

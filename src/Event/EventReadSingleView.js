@@ -32,6 +32,7 @@ const EventReadSingleView = props => {
   const [alert, setAlert] = React.useState(null);
   const { userInContext } = React.useContext(UserContext);
   const [hideJoinButton, setHideJoinButton] = React.useState(true);
+  const [hideEditButton, setHideEditButton] = React.useState(true);
   // const postDeleteEvent = React.useCallback(
   //   async input => {
   //     return deleteEvent(input);
@@ -123,10 +124,19 @@ const EventReadSingleView = props => {
       const event = await fetchOneEvent({ eventId: eventId });
       const { attendees } = event;
       const userEmail = userInContext.user.email;
-      const hideButton =
+
+      const hideJoinButtonTemp =
         attendees.some(attendee => attendee.email === userEmail) ||
-        event.eventStatus !== "PENDING";
-      setHideJoinButton(hideButton);
+        event.eventStatus !== "PENDING" ||
+        event.eventStatus !== "GREENLIT";
+      setHideJoinButton(hideJoinButtonTemp);
+
+      const hideEditButtonTemp =
+        event.organizer &&
+        event.organizer.email !== userEmail &&
+        (event.eventStatus !== "PENDING" || event.eventStatus !== "GREENLIT");
+      setHideEditButton(hideEditButtonTemp);
+
       setEvent(event);
       hideAlert();
     };
@@ -153,15 +163,19 @@ const EventReadSingleView = props => {
                   </Button>
                 </div>
                 <div className={classes.right}>
-                  <Button
-                    color="success"
-                    className={classes.formButton}
-                    onClick={() => {
-                      history.push(`/main/Events/ViewEvent/${event.id}`);
-                    }}
-                  >
-                    Edit
-                  </Button>
+                  {hideEditButton ? (
+                    ""
+                  ) : (
+                    <Button
+                      color="success"
+                      className={classes.formButton}
+                      onClick={() => {
+                        history.push(`/main/Events/EditEvent/${event.id}`);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  )}
                   {hideJoinButton ? (
                     ""
                   ) : (

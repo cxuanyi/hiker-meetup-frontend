@@ -3,10 +3,9 @@ import useORMSAxios from "../../_axios/ormsAxios";
 const useEventApi = () => {
   const {
     ormsAxiosPostRequest,
-    ormsAxiosGetRequest
-    // ormsAxiosPutRequest,
+    ormsAxiosGetRequest,
+    ormsAxiosPatchRequest
     // ormsAxiosDeleteRequest,
-    // ormsAxiosGetFileRequest
   } = useORMSAxios();
 
   /* #region ######################## Fetch all Events  ######################## */
@@ -54,10 +53,33 @@ const useEventApi = () => {
   /* #region ######################## Create Full Event  ######################## */
   const createEvent = async event => {
     try {
-      // Create Event & Upload File.
+      // Create Event
       const responseData = await ormsAxiosPostRequest("/events", event, {
         headers: { "Content-Type": "application/json" }
       });
+
+      // backend return failure to create
+      if (responseData.error) {
+        throw new Error();
+      }
+      return responseData;
+    } catch (error) {
+      return { error: 1 };
+    }
+  };
+  /* #endregion */
+
+  /* #region ######################## Create Full Event  ######################## */
+  const updateEvent = async event => {
+    try {
+      // Update Event
+      const responseData = await ormsAxiosPatchRequest(
+        `/events/${event.id}`,
+        event,
+        {
+          headers: { "Content-Type": "application/json" }
+        }
+      );
 
       // backend return failure to create
       if (responseData.error) {
@@ -75,7 +97,8 @@ const useEventApi = () => {
     fetchAllUsers,
     fetchOneEvent,
     postPledgeEvent,
-    createEvent
+    createEvent,
+    updateEvent
   };
 };
 

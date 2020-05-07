@@ -12,7 +12,7 @@ import TagsInput from "react-tagsinput";
 // style for this view
 import formStyle from "../../_rootAsset/jss/formStyle";
 // other
-import { FORM_SUBMIT_CHECK_READY } from "../_subAction/createEventAction";
+import { FORM_SUBMIT_CHECK_READY } from "../_subAction/eventAction";
 import { getISOToDateString } from "../../_helper/date";
 
 const useFormStyle = makeStyles(formStyle);
@@ -25,7 +25,7 @@ const EventSubView = props => {
     const currentUrl = window.location.href;
     if (
       currentUrl.includes("CreateEvent") ||
-      currentUrl.includes("UpdateEvent")
+      currentUrl.includes("EditEvent")
     ) {
       dispatchValidate({
         action: FORM_SUBMIT_CHECK_READY,

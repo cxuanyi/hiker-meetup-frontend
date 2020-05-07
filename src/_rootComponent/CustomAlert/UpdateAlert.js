@@ -30,7 +30,7 @@ const UpdateAlert = props => {
     );
   };
 
-  const successUpdate = () => {
+  const successUpdate = updateResult => {
     setAlert(
       <SweetAlert
         success
@@ -38,12 +38,12 @@ const UpdateAlert = props => {
         confirmBtnCssClass={confirmBtnCssClass}
         title="Updated!"
         onConfirm={() => {
-          redirectCallback();
+          redirectCallback(updateResult.id);
           hideAlert();
         }}
         onCancel={() => hideAlert()}
       >
-        Selected record has been updated.
+        Selected Event has been updated.
       </SweetAlert>
     );
   };
@@ -100,7 +100,7 @@ const UpdateAlert = props => {
         loadingUpdate();
         const updateResult = await updateCallback();
         if (updateResult.error) failureUpdate();
-        else successUpdate();
+        else successUpdate(updateResult);
       }}
       onCancel={() => cancelUpdate()}
       showCancel
