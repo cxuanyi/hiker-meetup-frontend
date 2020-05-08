@@ -20,6 +20,7 @@ import LoadingAlert from "../_rootComponent/CustomAlert/LoadingAlert";
 import CancelEventAlert from "../_rootComponent/CustomAlert/CancelEventAlert";
 import PledgeEventAlert from "../_rootComponent/CustomAlert/PledgeEventAlert";
 import UnpledgeEventAlert from "../_rootComponent/CustomAlert/UnpledgeEventAlert";
+import StartEventAlert from "../_rootComponent/CustomAlert/StartEventAlert";
 import { UserContext } from "../_rootContext/UserContext";
 
 const useFormStyle = makeStyles(formStyle);
@@ -34,6 +35,7 @@ const EventReadSingleView = props => {
     postCancelEvent,
     postPledgeEvent,
     postUnpledgeEvent,
+    postStartEvent,
     postLikeEvent,
     postUnlikeEvent
   } = useEventApi();
@@ -43,6 +45,8 @@ const EventReadSingleView = props => {
   const [hideCancelButton, setHideCancelButton] = React.useState(true);
   const [hideJoinButton, setHideJoinButton] = React.useState(true);
   const [hideUnjoinButton, setHideUnjoinButton] = React.useState(true);
+  const [hideStartButton, setHideStartButton] = React.useState(true);
+  const [hideFinishButton, setHideFinishButton] = React.useState(true);
   const [toggleLikeButton, setToggleLikeButton] = React.useState(true);
 
   const loadingAlert = React.useCallback(() => {
@@ -167,6 +171,44 @@ const EventReadSingleView = props => {
   );
   /* #endregion */
 
+  /* #region ############ startEventAlert() & requestStartEvent(): Start an event once date has reached ############## */
+  const requestStartEvent = React.useCallback(
+    async event_ => {
+      return await postStartEvent(event_);
+    },
+    [postStartEvent]
+  );
+  const startEventAlert = React.useCallback(
+    event_ => {
+      setAlert(
+        <StartEventAlert
+          {...props}
+          setAlert={setAlert}
+          confirmBtnCssClass={classes.button + " " + classes.success}
+          cancelBtnCssClass={classes.button + " " + classes.danger}
+          submitRequestCallback={async () => {
+            const result = await requestStartEvent(event_);
+            return result;
+          }}
+          redirectCallback={() => {
+            history.push(`/main/Events/ListEvents/${event_.id}`);
+          }}
+        >
+          Let it begin?!? OoooooWeeee~
+        </StartEventAlert>
+      );
+    },
+    [
+      classes.danger,
+      classes.success,
+      classes.button,
+      props,
+      requestUnpledgeEvent,
+      history
+    ]
+  );
+  /* #endregion */
+
   /* #region ############ requestLikeEvent() & requestUnlikeEvent(): Like or Unlike ############## */
   const requestLikeEvent = React.useCallback(
     async event_ => {
@@ -206,6 +248,8 @@ const EventReadSingleView = props => {
         attendees.some(attendee => attendee.email === userEmail) ||
         (event.eventStatus !== "PENDING" && event.eventStatus !== "GREENLIT");
       let hideUnjoinButtonTemp = !hideJoinButtonTemp;
+      let hideStartButtonTemp = true;
+      let hideFinishButtonTemp = true;
 
       if (event.organizer && event.organizer.email === userEmail) {
         hideJoinButtonTemp = true;
@@ -231,6 +275,25 @@ const EventReadSingleView = props => {
       }
 
       if (
+        todayDate > startDateTimeTemp &&
+        todayDate < endDateTimeTemp &&
+        event.organizer &&
+        event.organizer.email === userEmail &&
+        (event.eventStatus === "PENDING" || event.eventStatus === "GREENLIT")
+      ) {
+        hideStartButtonTemp = false;
+      }
+
+      if (
+        todayDate > endDateTimeTemp &&
+        event.organizer &&
+        event.organizer.email === userEmail &&
+        event.eventStatus === "STARTED"
+      ) {
+        hideFinishButtonTemp = false;
+      }
+
+      if (
         event.eventStatus === "CANCELED" ||
         event.eventStatus === "STARTED" ||
         event.eventStatus === "FINISHED"
@@ -245,6 +308,8 @@ const EventReadSingleView = props => {
       setHideCancelButton(hideCancelButtonTemp);
       setHideJoinButton(hideJoinButtonTemp);
       setHideUnjoinButton(hideUnjoinButtonTemp);
+      setHideStartButton(hideStartButtonTemp);
+      setHideFinishButton(hideFinishButtonTemp);
 
       // Like & unlike
       const toggleLikeButtonTemp = followers.some(
@@ -326,6 +391,30 @@ const EventReadSingleView = props => {
                       onClick={() => unpledgeEventAlert(event)}
                     >
                       Unpledge to miss...
+                    </Button>
+                  )}
+                  {/* [Start] Button */}
+                  {hideStartButton ? (
+                    ""
+                  ) : (
+                    <Button
+                      color="primary"
+                      className={classes.formButton}
+                      onClick={() => startEventAlert(event)}
+                    >
+                      Start Event
+                    </Button>
+                  )}
+                  {/* [Finish] Button */}
+                  {hideFinishButton ? (
+                    ""
+                  ) : (
+                    <Button
+                      color="success"
+                      className={classes.formButton}
+                      onClick={() => startEventAlert(event)}
+                    >
+                      Finish Event
                     </Button>
                   )}
                   {/* [Like && Unlike] Button */}
