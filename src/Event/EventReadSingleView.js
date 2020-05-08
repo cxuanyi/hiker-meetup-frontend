@@ -16,9 +16,9 @@ import formStyle from "../_rootAsset/jss/formStyle";
 import sweetAlertStyle from "../_rootComponent/CustomAlert/jss/sweetAlertStyle";
 //others
 import useEventApi from "./_subApi/eventApi";
-import DeleteAlert from "../_rootComponent/CustomAlert/DeleteAlert";
 import LoadingAlert from "../_rootComponent/CustomAlert/LoadingAlert";
 import PledgeEventAlert from "../_rootComponent/CustomAlert/PledgeEventAlert";
+import UnpledgeEventAlert from "../_rootComponent/CustomAlert/UnpledgeEventAlert";
 import { UserContext } from "../_rootContext/UserContext";
 
 const useFormStyle = makeStyles(formStyle);
@@ -28,52 +28,16 @@ const EventReadSingleView = props => {
   const { history, match } = props;
   const classes = { ...useFormStyle(), ...useSweetAlertStyle() };
   const [event, setEvent] = React.useState();
-  const { fetchOneEvent, postPledgeEvent } = useEventApi();
+  const { fetchOneEvent, postPledgeEvent, postUnpledgeEvent } = useEventApi();
   const [alert, setAlert] = React.useState(null);
   const { userInContext } = React.useContext(UserContext);
   const [hideJoinButton, setHideJoinButton] = React.useState(true);
+  const [hideUnjoinButton, setHideUnjoinButton] = React.useState(true);
   const [hideEditButton, setHideEditButton] = React.useState(true);
-  // const postDeleteEvent = React.useCallback(
-  //   async input => {
-  //     return deleteEvent(input);
-  //   },
-  //   [deleteEvent]
-  // );
-  // const deleteCallback = React.useCallback(async () => {
-  //   return await postDeleteEvent(event);
-  // }, [postDeleteEvent, event]);
   const loadingAlert = React.useCallback(() => {
     setAlert(<LoadingAlert {...props} setAlert={setAlert} />);
   }, [props]);
-  // const deleteAlert = React.useCallback(
-  //   event_id => {
-  //     setAlert(
-  //       <DeleteAlert
-  //         {...props}
-  //         setAlert={setAlert}
-  //         confirmBtnCssClass={classes.button + " " + classes.success}
-  //         cancelBtnCssClass={classes.button + " " + classes.danger}
-  //         deleteCallback={async () => {
-  //           const callbackResult = await deleteCallback(event_id);
-  //           return callbackResult;
-  //         }}
-  //         redirectCallback={() => {
-  //           history.push("/main/Events/ListEvents");
-  //         }}
-  //       >
-  //         You will not be able to recover this Event record!
-  //       </DeleteAlert>
-  //     );
-  //   },
-  //   [
-  //     classes.success,
-  //     classes.button,
-  //     classes.danger,
-  //     deleteCallback,
-  //     history,
-  //     props
-  //   ]
-  // );
+
   const hideAlert = () => {
     setAlert(null);
   };
@@ -116,25 +80,81 @@ const EventReadSingleView = props => {
   );
   /* #endregion */
 
+  /* #region ############ unpledgeEventAlert() & requestPledgeEvent(): Pledge to an event ############## */
+  const requestUnpledgeEvent = React.useCallback(
+    async event_ => {
+      return await postUnpledgeEvent(event_);
+    },
+    [postUnpledgeEvent]
+  );
+  const unpledgeEventAlert = React.useCallback(
+    event_ => {
+      setAlert(
+        <UnpledgeEventAlert
+          {...props}
+          setAlert={setAlert}
+          confirmBtnCssClass={classes.button + " " + classes.success}
+          cancelBtnCssClass={classes.button + " " + classes.danger}
+          submitRequestCallback={async () => {
+            const result = await requestUnpledgeEvent(event_);
+            return result;
+          }}
+          redirectCallback={() => {
+            history.push(`/main/Events/ListEvents/${event_.id}`);
+          }}
+        >
+          You will be condemned, you sure?
+        </UnpledgeEventAlert>
+      );
+    },
+    [
+      classes.danger,
+      classes.success,
+      classes.button,
+      props,
+      requestUnpledgeEvent,
+      history
+    ]
+  );
+  /* #endregion */
+
   /* #region ############ Initial initiation to values ############ */
   React.useEffect(() => {
     const initializeData = async () => {
       loadingAlert();
       const { eventId } = match.params;
       const event = await fetchOneEvent({ eventId: eventId });
-      const { attendees } = event;
+      const { attendees, startDateTime, endDateTime } = event;
       const userEmail = userInContext.user.email;
+      const startDateTimeTemp = new Date(startDateTime);
+      const endDateTimeTemp = new Date(endDateTime);
+      const todayDate = new Date();
 
-      const hideJoinButtonTemp =
+      let hideJoinButtonTemp =
         attendees.some(attendee => attendee.email === userEmail) ||
-        event.eventStatus !== "PENDING" ||
-        event.eventStatus !== "GREENLIT";
-      setHideJoinButton(hideJoinButtonTemp);
-
-      const hideEditButtonTemp =
+        (event.eventStatus !== "PENDING" && event.eventStatus !== "GREENLIT");
+      let hideUnjoinButtonTemp = !hideJoinButtonTemp;
+      let hideEditButtonTemp =
         event.organizer &&
         event.organizer.email !== userEmail &&
         (event.eventStatus !== "PENDING" || event.eventStatus !== "GREENLIT");
+
+      if (todayDate > startDateTimeTemp) {
+        hideJoinButtonTemp = true;
+        hideUnjoinButtonTemp = true;
+        hideEditButtonTemp = true;
+      } else {
+        //pending
+      }
+
+      if (todayDate > endDateTimeTemp) {
+        //pending
+      } else {
+        //pending
+      }
+
+      setHideJoinButton(hideJoinButtonTemp);
+      setHideUnjoinButton(hideUnjoinButtonTemp);
       setHideEditButton(hideEditButtonTemp);
 
       setEvent(event);
@@ -176,6 +196,7 @@ const EventReadSingleView = props => {
                       Edit
                     </Button>
                   )}
+                  {/* Join Button && Miss Button */}
                   {hideJoinButton ? (
                     ""
                   ) : (
@@ -185,6 +206,17 @@ const EventReadSingleView = props => {
                       onClick={() => pledgeEventAlert(event)}
                     >
                       Pledge to join!
+                    </Button>
+                  )}
+                  {hideUnjoinButton ? (
+                    ""
+                  ) : (
+                    <Button
+                      color="warning"
+                      className={classes.formButton}
+                      onClick={() => unpledgeEventAlert(event)}
+                    >
+                      Unpledge to miss...
                     </Button>
                   )}
                   {/* <Button

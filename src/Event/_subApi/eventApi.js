@@ -22,27 +22,6 @@ const useEventApi = () => {
   };
   /* #endregion */
 
-  /* #region ######################## Post Pledge Event ######################## */
-  const postPledgeEvent = async event => {
-    try {
-      const eventId = event.id;
-      const responseData = await ormsAxiosPostRequest(
-        `/events/${eventId}/attend`,
-        {},
-        { headers: { "Content-Type": "application/json" } }
-      );
-
-      if (responseData.error) {
-        throw new Error();
-      }
-
-      return responseData;
-    } catch (error) {
-      return { error: 1 };
-    }
-  };
-  /* #endregion */
-
   /* #region ######################## Fetch all User  ######################## */
   const fetchAllUsers = async () => {
     const allUsers = await ormsAxiosGetRequest("/user");
@@ -50,7 +29,7 @@ const useEventApi = () => {
   };
   /* #endregion */
 
-  /* #region ######################## Create Full Event  ######################## */
+  /* #region ######################## Create Event  ######################## */
   const createEvent = async event => {
     try {
       // Create Event
@@ -69,7 +48,7 @@ const useEventApi = () => {
   };
   /* #endregion */
 
-  /* #region ######################## Create Full Event  ######################## */
+  /* #region ######################## Update Event  ######################## */
   const updateEvent = async event => {
     try {
       // Update Event
@@ -92,13 +71,56 @@ const useEventApi = () => {
   };
   /* #endregion */
 
+  /* #region ######################## Post Pledge Event ######################## */
+  const postPledgeEvent = async event => {
+    try {
+      const eventId = event.id;
+      const responseData = await ormsAxiosPostRequest(
+        `/events/${eventId}/attend`,
+        {},
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      if (responseData.error) {
+        throw new Error();
+      }
+
+      return responseData;
+    } catch (error) {
+      return { error: 1 };
+    }
+  };
+  /* #endregion */
+
+  /* #region ######################## Post Unpledge Event ######################## */
+  const postUnpledgeEvent = async event => {
+    try {
+      const eventId = event.id;
+      const responseData = await ormsAxiosPostRequest(
+        `/events/${eventId}/miss`,
+        {},
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      if (responseData.error) {
+        throw new Error();
+      }
+
+      return responseData;
+    } catch (error) {
+      return { error: 1 };
+    }
+  };
+  /* #endregion */
+
   return {
     fetchAllEvents,
     fetchAllUsers,
     fetchOneEvent,
-    postPledgeEvent,
     createEvent,
-    updateEvent
+    updateEvent,
+    postPledgeEvent,
+    postUnpledgeEvent
   };
 };
 

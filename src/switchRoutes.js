@@ -18,9 +18,17 @@ export default function SwitchRoutes() {
           {/* <Redirect from="/" to="/main/General/Dashboard" /> */}
           <Redirect from="/" to="/main/Events/ListEvents" />
           {/* <Redirect from="/" to="/main/Events/CreateEvent" /> */}
-          <Redirect
+          {/* <Redirect
             from="/"
             to="/main/Events/EditEvent/a9c0d07d-b427-4489-b87e-15c8aef1921b"
+          /> */}
+          {/* <Redirect
+            from="/"
+            to="/main/Events/ViewEvent/cd4663b0-7969-468d-9a2e-ed7ea07e91b6"
+          /> */}
+          <Redirect
+            from="/"
+            to="/main/Events/ViewEvent/81f3945f-356b-4d77-bfce-c0272b6b7503"
           />
         </Fragment>
       ) : (
