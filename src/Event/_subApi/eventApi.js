@@ -134,6 +134,48 @@ const useEventApi = () => {
   };
   /* #endregion */
 
+  /* #region ######################## Post Like Event ######################## */
+  const postLikeEvent = async event => {
+    try {
+      const eventId = event.id;
+      const responseData = await ormsAxiosPostRequest(
+        `/events/${eventId}/like`,
+        {},
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      if (responseData.error) {
+        throw new Error();
+      }
+
+      return responseData;
+    } catch (error) {
+      return { error: 1 };
+    }
+  };
+  /* #endregion */
+
+  /* #region ######################## Post Unlike Event ######################## */
+  const postUnlikeEvent = async event => {
+    try {
+      const eventId = event.id;
+      const responseData = await ormsAxiosPostRequest(
+        `/events/${eventId}/unlike`,
+        {},
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      if (responseData.error) {
+        throw new Error();
+      }
+
+      return responseData;
+    } catch (error) {
+      return { error: 1 };
+    }
+  };
+  /* #endregion */
+
   return {
     fetchAllEvents,
     fetchAllUsers,
@@ -142,7 +184,9 @@ const useEventApi = () => {
     updateEvent,
     postCancelEvent,
     postPledgeEvent,
-    postUnpledgeEvent
+    postUnpledgeEvent,
+    postLikeEvent,
+    postUnlikeEvent
   };
 };
 

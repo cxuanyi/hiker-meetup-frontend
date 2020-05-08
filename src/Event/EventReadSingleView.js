@@ -33,7 +33,9 @@ const EventReadSingleView = props => {
     fetchOneEvent,
     postCancelEvent,
     postPledgeEvent,
-    postUnpledgeEvent
+    postUnpledgeEvent,
+    postLikeEvent,
+    postUnlikeEvent
   } = useEventApi();
   const [alert, setAlert] = React.useState(null);
   const { userInContext } = React.useContext(UserContext);
@@ -41,7 +43,7 @@ const EventReadSingleView = props => {
   const [hideCancelButton, setHideCancelButton] = React.useState(true);
   const [hideJoinButton, setHideJoinButton] = React.useState(true);
   const [hideUnjoinButton, setHideUnjoinButton] = React.useState(true);
-  // const [hideLikeButton, setHideLikeButton] = React.useState(true);
+  const [toggleLikeButton, setToggleLikeButton] = React.useState(true);
 
   const loadingAlert = React.useCallback(() => {
     setAlert(<LoadingAlert {...props} setAlert={setAlert} />);
@@ -165,13 +167,28 @@ const EventReadSingleView = props => {
   );
   /* #endregion */
 
+  /* #region ############ requestLikeEvent() & requestUnlikeEvent(): Like or Unlike ############## */
+  const requestLikeEvent = React.useCallback(
+    async event_ => {
+      return await postLikeEvent(event_);
+    },
+    [postLikeEvent]
+  );
+  const requestUnlikeEvent = React.useCallback(
+    async event_ => {
+      return await postUnlikeEvent(event_);
+    },
+    [postUnlikeEvent]
+  );
+  /* #endregion */
+
   /* #region ############ Initial initiation to values ############ */
   React.useEffect(() => {
     const initializeData = async () => {
       loadingAlert();
       const { eventId } = match.params;
       const event = await fetchOneEvent({ eventId: eventId });
-      const { attendees, startDateTime, endDateTime } = event;
+      const { attendees, startDateTime, endDateTime, followers } = event;
       const userEmail = userInContext.user.email;
       const startDateTimeTemp = new Date(startDateTime);
       const endDateTimeTemp = new Date(endDateTime);
@@ -223,10 +240,17 @@ const EventReadSingleView = props => {
         hideJoinButtonTemp = true;
         hideUnjoinButtonTemp = true;
       }
+
       setHideEditButton(hideEditButtonTemp);
       setHideCancelButton(hideCancelButtonTemp);
       setHideJoinButton(hideJoinButtonTemp);
       setHideUnjoinButton(hideUnjoinButtonTemp);
+
+      // Like & unlike
+      const toggleLikeButtonTemp = followers.some(
+        follower => follower.email === userEmail
+      );
+      setToggleLikeButton(toggleLikeButtonTemp);
 
       setEvent(event);
       hideAlert();
@@ -304,13 +328,30 @@ const EventReadSingleView = props => {
                       Unpledge to miss...
                     </Button>
                   )}
-                  {/* <Button
-                    color="danger"
-                    className={classes.formButton}
-                    onClick={() => deleteAlert()}
-                  >
-                    Delete
-                  </Button> */}
+                  {/* [Like && Unlike] Button */}
+                  {toggleLikeButton ? (
+                    <Button
+                      color="info"
+                      className={classes.formButton}
+                      onClick={() => {
+                        requestUnlikeEvent(event);
+                        setToggleLikeButton(false);
+                      }}
+                    >
+                      Unlike
+                    </Button>
+                  ) : (
+                    <Button
+                      color="info"
+                      className={classes.formButton}
+                      onClick={() => {
+                        requestLikeEvent(event);
+                        setToggleLikeButton(true);
+                      }}
+                    >
+                      Like
+                    </Button>
+                  )}
                 </div>
               </div>
             </form>
