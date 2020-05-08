@@ -17,6 +17,7 @@ import sweetAlertStyle from "../_rootComponent/CustomAlert/jss/sweetAlertStyle";
 //others
 import useEventApi from "./_subApi/eventApi";
 import LoadingAlert from "../_rootComponent/CustomAlert/LoadingAlert";
+import CancelEventAlert from "../_rootComponent/CustomAlert/CancelEventAlert";
 import PledgeEventAlert from "../_rootComponent/CustomAlert/PledgeEventAlert";
 import UnpledgeEventAlert from "../_rootComponent/CustomAlert/UnpledgeEventAlert";
 import { UserContext } from "../_rootContext/UserContext";
@@ -28,12 +29,20 @@ const EventReadSingleView = props => {
   const { history, match } = props;
   const classes = { ...useFormStyle(), ...useSweetAlertStyle() };
   const [event, setEvent] = React.useState();
-  const { fetchOneEvent, postPledgeEvent, postUnpledgeEvent } = useEventApi();
+  const {
+    fetchOneEvent,
+    postCancelEvent,
+    postPledgeEvent,
+    postUnpledgeEvent
+  } = useEventApi();
   const [alert, setAlert] = React.useState(null);
   const { userInContext } = React.useContext(UserContext);
+  const [hideEditButton, setHideEditButton] = React.useState(true);
+  const [hideCancelButton, setHideCancelButton] = React.useState(true);
   const [hideJoinButton, setHideJoinButton] = React.useState(true);
   const [hideUnjoinButton, setHideUnjoinButton] = React.useState(true);
-  const [hideEditButton, setHideEditButton] = React.useState(true);
+  // const [hideLikeButton, setHideLikeButton] = React.useState(true);
+
   const loadingAlert = React.useCallback(() => {
     setAlert(<LoadingAlert {...props} setAlert={setAlert} />);
   }, [props]);
@@ -41,6 +50,44 @@ const EventReadSingleView = props => {
   const hideAlert = () => {
     setAlert(null);
   };
+
+  /* #region ############ cancelEventAlert() & requestCancelEvent(): Cancel an event ############## */
+  const requestCancelEvent = React.useCallback(
+    async event_ => {
+      return await postCancelEvent(event_);
+    },
+    [postCancelEvent]
+  );
+  const cancelEventAlert = React.useCallback(
+    event_ => {
+      setAlert(
+        <CancelEventAlert
+          {...props}
+          setAlert={setAlert}
+          confirmBtnCssClass={classes.button + " " + classes.success}
+          cancelBtnCssClass={classes.button + " " + classes.danger}
+          submitRequestCallback={async () => {
+            const result = await requestCancelEvent(event_);
+            return result;
+          }}
+          redirectCallback={() => {
+            history.push(`/main/Events/ListEvents/${event_.id}`);
+          }}
+        >
+          You will feel sorry for yourself, you sure?
+        </CancelEventAlert>
+      );
+    },
+    [
+      classes.danger,
+      classes.success,
+      classes.button,
+      props,
+      requestCancelEvent,
+      history
+    ]
+  );
+  /* #endregion */
 
   /* #region ############ pledgeEventAlert() & requestPledgeEvent(): Pledge to an event ############## */
   const requestPledgeEvent = React.useCallback(
@@ -80,7 +127,7 @@ const EventReadSingleView = props => {
   );
   /* #endregion */
 
-  /* #region ############ unpledgeEventAlert() & requestPledgeEvent(): Pledge to an event ############## */
+  /* #region ############ unpledgeEventAlert() & requestUnpledgeEvent(): Unpledge to an pledge event ############## */
   const requestUnpledgeEvent = React.useCallback(
     async event_ => {
       return await postUnpledgeEvent(event_);
@@ -130,32 +177,56 @@ const EventReadSingleView = props => {
       const endDateTimeTemp = new Date(endDateTime);
       const todayDate = new Date();
 
-      let hideJoinButtonTemp =
-        attendees.some(attendee => attendee.email === userEmail) ||
-        (event.eventStatus !== "PENDING" && event.eventStatus !== "GREENLIT");
-      let hideUnjoinButtonTemp = !hideJoinButtonTemp;
       let hideEditButtonTemp =
         event.organizer &&
         event.organizer.email !== userEmail &&
         (event.eventStatus !== "PENDING" || event.eventStatus !== "GREENLIT");
+      let hideCancelButtonTemp =
+        event.organizer &&
+        event.organizer.email !== userEmail &&
+        (event.eventStatus !== "PENDING" || event.eventStatus !== "GREENLIT");
+      let hideJoinButtonTemp =
+        attendees.some(attendee => attendee.email === userEmail) ||
+        (event.eventStatus !== "PENDING" && event.eventStatus !== "GREENLIT");
+      let hideUnjoinButtonTemp = !hideJoinButtonTemp;
 
-      if (todayDate > startDateTimeTemp) {
+      if (event.organizer && event.organizer.email === userEmail) {
         hideJoinButtonTemp = true;
         hideUnjoinButtonTemp = true;
+      }
+
+      if (todayDate > startDateTimeTemp) {
         hideEditButtonTemp = true;
+        hideCancelButtonTemp = true;
+        hideJoinButtonTemp = true;
+        hideUnjoinButtonTemp = true;
       } else {
         //pending
       }
 
       if (todayDate > endDateTimeTemp) {
-        //pending
+        hideEditButtonTemp = true;
+        hideCancelButtonTemp = true;
+        hideJoinButtonTemp = true;
+        hideUnjoinButtonTemp = true;
       } else {
         //pending
       }
 
+      if (
+        event.eventStatus === "CANCELED" ||
+        event.eventStatus === "STARTED" ||
+        event.eventStatus === "FINISHED"
+      ) {
+        hideEditButtonTemp = true;
+        hideCancelButtonTemp = true;
+        hideJoinButtonTemp = true;
+        hideUnjoinButtonTemp = true;
+      }
+      setHideEditButton(hideEditButtonTemp);
+      setHideCancelButton(hideCancelButtonTemp);
       setHideJoinButton(hideJoinButtonTemp);
       setHideUnjoinButton(hideUnjoinButtonTemp);
-      setHideEditButton(hideEditButtonTemp);
 
       setEvent(event);
       hideAlert();
@@ -183,6 +254,7 @@ const EventReadSingleView = props => {
                   </Button>
                 </div>
                 <div className={classes.right}>
+                  {/* [Edit] Button */}
                   {hideEditButton ? (
                     ""
                   ) : (
@@ -196,7 +268,19 @@ const EventReadSingleView = props => {
                       Edit
                     </Button>
                   )}
-                  {/* Join Button && Miss Button */}
+                  {/* [Cancel] Button */}
+                  {hideCancelButton ? (
+                    ""
+                  ) : (
+                    <Button
+                      color="danger"
+                      className={classes.formButton}
+                      onClick={() => cancelEventAlert(event)}
+                    >
+                      Cancel
+                    </Button>
+                  )}
+                  {/* [Pledge] Button */}
                   {hideJoinButton ? (
                     ""
                   ) : (
@@ -208,6 +292,7 @@ const EventReadSingleView = props => {
                       Pledge to join!
                     </Button>
                   )}
+                  {/* [Unpledge] Button */}
                   {hideUnjoinButton ? (
                     ""
                   ) : (

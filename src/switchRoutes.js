@@ -30,6 +30,10 @@ export default function SwitchRoutes() {
             from="/"
             to="/main/Events/ViewEvent/81f3945f-356b-4d77-bfce-c0272b6b7503"
           />
+          {/* <Redirect
+            from="/"
+            to="/main/Events/ViewEvent/a9c0d07d-b427-4489-b87e-15c8aef1921b" // Check Cancel status
+          /> */}
         </Fragment>
       ) : (
         <Fragment>

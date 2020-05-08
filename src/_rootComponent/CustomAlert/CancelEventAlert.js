@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import SweetAlert from "react-bootstrap-sweetalert";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-const UnpledgeEventAlert = props => {
+const CancelEventAlert = props => {
   const {
     setAlert,
     confirmBtnCssClass,
@@ -36,13 +36,13 @@ const UnpledgeEventAlert = props => {
         success
         style={{ display: "block", marginTop: "-200px" }}
         confirmBtnCssClass={confirmBtnCssClass}
-        title="Unpledgey Unpledged to Event..."
+        title="Canceled Event... :.("
         onConfirm={() => {
           redirectCallback();
         }}
         onCancel={() => hideAlert()}
       >
-        Unpledged! Remember to regret.
+        Canceled! Remember to feel sorry for yourself.
       </SweetAlert>
     );
   };
@@ -53,13 +53,13 @@ const UnpledgeEventAlert = props => {
         danger
         style={{ display: "block", marginTop: "-200px" }}
         confirmBtnCssClass={confirmBtnCssClass}
-        title="Unplegey Unpledge Not Accepted!"
+        title="Cancel Not Accepted!~"
         onConfirm={() => {
           hideAlert();
         }}
         onCancel={() => hideAlert()}
       >
-        Unable to pledge, maybe your soul is too pure.
+        It&apos;s destined to happen. Haha!
       </SweetAlert>
     );
   };
@@ -76,7 +76,7 @@ const UnpledgeEventAlert = props => {
         }}
         onCancel={() => hideAlert()}
       >
-        You are not withdrawing! :D
+        You are not withdrawing your responsiblity! :D
       </SweetAlert>
     );
   };
@@ -89,8 +89,8 @@ const UnpledgeEventAlert = props => {
     <SweetAlert
       {...rest}
       warning
-      title="Unpledgey Unpledge to Event?"
-      confirmBtnText="Yes, I unpledge. I'm lousy."
+      title="What?! Cancel Event????"
+      confirmBtnText="Yes, I want to cancel. I shall repent."
       cancelBtnText="Nope"
       style={{ display: "block", marginTop: "-200px" }}
       confirmBtnCssClass={confirmBtnCssClass}
@@ -109,7 +109,7 @@ const UnpledgeEventAlert = props => {
   );
 };
 
-UnpledgeEventAlert.propTypes = {
+CancelEventAlert.propTypes = {
   children: PropTypes.node,
   alert: PropTypes.node,
   setAlert: PropTypes.func,
@@ -119,4 +119,4 @@ UnpledgeEventAlert.propTypes = {
   redirectCallback: PropTypes.func
 };
 
-export default UnpledgeEventAlert;
+export default CancelEventAlert;
