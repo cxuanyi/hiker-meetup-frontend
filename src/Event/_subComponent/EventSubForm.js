@@ -52,7 +52,7 @@ const EventSubForm = props => {
   };
   const handleDateChange = (momentObject, dateField) => {
     if (typeof momentObject.format !== "undefined") {
-      const dateString = momentObject.format("YYYY-MM-DD HH:mm");
+      const dateString = momentObject.format("YYYY-MM-DD");
       let eventTemp = { ...event };
 
       eventTemp[dateField] = dateString;
@@ -214,7 +214,7 @@ const EventSubForm = props => {
                 <Datetime
                   id="startDateTime"
                   name="startDateTime"
-                  timeFormat={true}
+                  timeFormat={false}
                   className={classes.horizontalDatepicker}
                   inputProps={{
                     placeholder: "(e.g. 10/10/2019 12.00am, etc)",
@@ -251,7 +251,7 @@ const EventSubForm = props => {
                 <Datetime
                   id="endDateTime"
                   name="endDateTime"
-                  timeFormat={true}
+                  timeFormat={false}
                   className={classes.horizontalDatepicker}
                   inputProps={{
                     placeholder: "(e.g. 10/10/2019 12.00am, etc)",

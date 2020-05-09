@@ -1,5 +1,8 @@
 const getEpochDate = () => Math.round(new Date().getTime() / 1000);
-const getISOToDateString = isoDate => new Date(isoDate).toDateString();
+const getISOToDateString = isoDate => {
+  const inputDate = new Date(isoDate);
+  return inputDate.toDateString();
+};
 const getYYYYMMDDSlash = isoDateString => {
   const date = new Date(isoDateString);
   return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;

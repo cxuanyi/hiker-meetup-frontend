@@ -104,12 +104,32 @@ const EventEditForm = props => {
 
   /* #region ############ postUpdateEvent, updateEventCallback, updateAlert ############ */
   const updateEventCallback = React.useCallback(async () => {
+    let startDateTimeTemp = new Date(event.startDateTime);
+    let endDateTimeTemp = new Date(event.endDateTime);
+    startDateTimeTemp.setDate(startDateTimeTemp.getDate() + 1);
+    endDateTimeTemp.setDate(endDateTimeTemp.getDate() + 1);
+    let startDateTimeTempISOString = startDateTimeTemp.toISOString();
+    let endDateTimeTempISOString = endDateTimeTemp.toISOString();
+
+    startDateTimeTempISOString =
+      startDateTimeTempISOString.substring(
+        0,
+        startDateTimeTempISOString.indexOf("T") + 1
+      ) + "00:00";
+
+    endDateTimeTempISOString =
+      endDateTimeTempISOString.substring(
+        0,
+        endDateTimeTempISOString.indexOf("T") + 1
+      ) + "00:00";
+
     let eventTemp = {
       ...event,
       minAttendees: parseInt(event.minAttendees),
-      startDateTime: new Date(event.startDateTime).toISOString(),
-      endDateTime: new Date(event.endDateTime).toISOString()
+      startDateTime: startDateTimeTempISOString,
+      endDateTime: endDateTimeTempISOString
     };
+
     return await updateEvent(eventTemp);
   }, [updateEvent, event]);
   const updateAlert = React.useCallback(() => {

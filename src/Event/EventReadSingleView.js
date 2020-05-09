@@ -245,7 +245,8 @@ const EventReadSingleView = props => {
         event.organizer.email !== userEmail &&
         (event.eventStatus !== "PENDING" || event.eventStatus !== "GREENLIT");
       let hideJoinButtonTemp =
-        attendees.some(attendee => attendee.email === userEmail) ||
+        (event.attendees &&
+          attendees.some(attendee => attendee.email === userEmail)) ||
         (event.eventStatus !== "PENDING" && event.eventStatus !== "GREENLIT");
       let hideUnjoinButtonTemp = !hideJoinButtonTemp;
       let hideStartButtonTemp = true;
@@ -285,7 +286,7 @@ const EventReadSingleView = props => {
       }
 
       if (
-        todayDate > endDateTimeTemp &&
+        todayDate >= endDateTimeTemp &&
         event.organizer &&
         event.organizer.email === userEmail &&
         event.eventStatus === "STARTED"
@@ -312,9 +313,8 @@ const EventReadSingleView = props => {
       setHideFinishButton(hideFinishButtonTemp);
 
       // Like & unlike
-      const toggleLikeButtonTemp = followers.some(
-        follower => follower.email === userEmail
-      );
+      const toggleLikeButtonTemp =
+        followers && followers.some(follower => follower.email === userEmail);
       setToggleLikeButton(toggleLikeButtonTemp);
 
       setEvent(event);
