@@ -21,6 +21,7 @@ import CancelEventAlert from "../_rootComponent/CustomAlert/CancelEventAlert";
 import PledgeEventAlert from "../_rootComponent/CustomAlert/PledgeEventAlert";
 import UnpledgeEventAlert from "../_rootComponent/CustomAlert/UnpledgeEventAlert";
 import StartEventAlert from "../_rootComponent/CustomAlert/StartEventAlert";
+import FinishEventAlert from "../_rootComponent/CustomAlert/FinishEventAlert";
 import { UserContext } from "../_rootContext/UserContext";
 
 const useFormStyle = makeStyles(formStyle);
@@ -36,6 +37,7 @@ const EventReadSingleView = props => {
     postPledgeEvent,
     postUnpledgeEvent,
     postStartEvent,
+    postFinishEvent,
     postLikeEvent,
     postUnlikeEvent
   } = useEventApi();
@@ -203,7 +205,45 @@ const EventReadSingleView = props => {
       classes.success,
       classes.button,
       props,
-      requestUnpledgeEvent,
+      requestStartEvent,
+      history
+    ]
+  );
+  /* #endregion */
+
+  /* #region ############ finishEventAlert() & requestFinishEvent(): Finish an event once date has reached ############## */
+  const requestFinishEvent = React.useCallback(
+    async event_ => {
+      return await postFinishEvent(event_);
+    },
+    [postFinishEvent]
+  );
+  const finishEventAlert = React.useCallback(
+    event_ => {
+      setAlert(
+        <FinishEventAlert
+          {...props}
+          setAlert={setAlert}
+          confirmBtnCssClass={classes.button + " " + classes.success}
+          cancelBtnCssClass={classes.button + " " + classes.danger}
+          submitRequestCallback={async () => {
+            const result = await requestFinishEvent(event_);
+            return result;
+          }}
+          redirectCallback={() => {
+            history.push(`/main/Events/ListEvents/${event_.id}`);
+          }}
+        >
+          Finishing?!? So fast?!? OoooooKeeee~
+        </FinishEventAlert>
+      );
+    },
+    [
+      classes.danger,
+      classes.success,
+      classes.button,
+      props,
+      requestFinishEvent,
       history
     ]
   );
@@ -412,7 +452,7 @@ const EventReadSingleView = props => {
                     <Button
                       color="success"
                       className={classes.formButton}
-                      onClick={() => startEventAlert(event)}
+                      onClick={() => finishEventAlert(event)}
                     >
                       Finish Event
                     </Button>

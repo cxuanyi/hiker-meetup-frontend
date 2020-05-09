@@ -113,6 +113,27 @@ const useEventApi = () => {
   };
   /* #endregion */
 
+  /* #region ######################## Post Finish Event ######################## */
+  const postFinishEvent = async event => {
+    try {
+      const eventId = event.id;
+      const responseData = await ormsAxiosPostRequest(
+        `/events/${eventId}/finish`,
+        {},
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      if (responseData.error) {
+        throw new Error();
+      }
+
+      return responseData;
+    } catch (error) {
+      return { error: 1 };
+    }
+  };
+  /* #endregion */
+
   /* #region ######################## Post Pledge Event ######################## */
   const postPledgeEvent = async event => {
     try {
@@ -205,6 +226,7 @@ const useEventApi = () => {
     updateEvent,
     postCancelEvent,
     postStartEvent,
+    postFinishEvent,
     postPledgeEvent,
     postUnpledgeEvent,
     postLikeEvent,
